@@ -1,12 +1,13 @@
+
 var txtUsername = document.getElementById("username");
 var txtPassword = document.getElementById("password");
 var chkRemember = document.getElementById("rememberMe");
 var btnLogin = document.getElementById("login");
-var btnSearch = document.getElementById("btnSearch");
 var txtSearch = document.getElementById("searchbox");
 
 //btnSubmit.addEventListener("click",submit);
 //studentID.addEventListener("blur",isNumeric);
+document.getElementById("btnSearch").addEventListener("click", retreiver);
 
 
 function isNumeric(elem){
@@ -24,4 +25,8 @@ function restrictLength(element,max_chars) {
     if(element.value.length > max_chars) {
         element.value = element.value.substr(0,max_chars);
     }
+}
+
+function retreiver() {
+
 }

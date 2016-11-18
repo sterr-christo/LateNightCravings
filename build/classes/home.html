@@ -11,10 +11,13 @@
 
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
 </head>
 
 <header>
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="float:right">Login / Register</button>
+	<input type="file" id="dbLocal">
 </header>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
@@ -32,7 +35,7 @@
             <label for="password" class="control-label">Password:</label>
             <input type="text" class="form-control" id="password" placeholder="Password">
             <div class="checkbox">
-            	<label><input type="checkbox" value="" id="rememberMe">Remember Me</label>
+            	<input type="checkbox" id="rememberMe"><label>Remember Me</label>
             </div>
           </div>
         </form>
@@ -51,7 +54,7 @@
 <br><br>
 <p class="text-center">
 <input type="text" name="searchbox" id="searchbox" autofocus placeholder="Enter Zip Code or Address, ex: 300 E St SW, Washington, DC 20546" style= "width:65%;"></input>
-<br><br><button type="button" class="btn btn-info btn-lg" id="btnSearch">Find food near me!</button>
+<br><br><button class="btn btn-info btn-lg" id="btnSearch">Find food near me!</button>
 
 <br><br><a href="./search.html">advanced search</a></p>
 
@@ -64,6 +67,10 @@
 </bottom>
 </div>
 <footer>
+<!-- My imported JavaScript Files -->
+<script async src="./test.js"></script>
+<script async src="./sql.js"></script>
+
 
 </footer>
 </html>
