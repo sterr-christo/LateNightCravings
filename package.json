@@ -1,0 +1,19 @@
+{
+  "name": "latenightcravings",
+  "version": "1.0.0",
+  "description": "Foooood",
+  "main": "database.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sterr-christo/LateNightCravings.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sterr-christo/LateNightCravings/issues"
+  },
+  "homepage": "https://github.com/sterr-christo/LateNightCravings#readme"
+}
