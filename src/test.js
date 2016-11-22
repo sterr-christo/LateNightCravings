@@ -1,14 +1,14 @@
-
 var txtUsername = document.getElementById("username");
 var txtPassword = document.getElementById("password");
 var chkRemember = document.getElementById("rememberMe");
 var btnLogin = document.getElementById("login");
 var txtSearch = document.getElementById("searchbox");
+var btnLoc = document.getElementById("btnLoc");
 
 //btnSubmit.addEventListener("click",submit);
 //studentID.addEventListener("blur",isNumeric);
 document.getElementById("btnSearch").addEventListener("click", retreiver);
-
+btnLoc.addEventListener("Click", getLocation());
 
 function isNumeric(elem){
 	var numericExpression = /^[0-9]+$/;
@@ -28,5 +28,16 @@ function restrictLength(element,max_chars) {
 }
 
 function retreiver() {
-	
+	txtSearch.value = "asdf";
+}
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+    	alert("Geolocation is not supported by this browser.");
+    }
+}
+function showPosition(position) {
+	txtSearch.value = position.coords.latitude +
+    ", " + position.coords.longitude;
 }
