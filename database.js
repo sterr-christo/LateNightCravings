@@ -13,14 +13,17 @@ db.serialize(function()  {
 		}
 		
 		var stmt = db.prepare("INSERT INTO Items VALUES(?,?,?,?)");
-		stmt.run(11,'cheeseburger',10.2,'A tasty Cheeseburger');
+		stmt.run(9, 'Ice cream', 2.50, 'a frozen dairy treat');
 		stmt.finalize();
 		
 		db.each("SELECT Name FROM Items", function(err,row) {
-			console.log(row.Name);
+			console.log(row.Name + " " + row.Description);
 		});
 	});
 
-db.close();
 console.log("Reached end");
+
+
+
+db.close();
 //npm install
