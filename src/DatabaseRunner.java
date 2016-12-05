@@ -17,7 +17,7 @@ public class DatabaseRunner {
 		 DatabaseRunner j = new DatabaseRunner(); 
 		 j.setupConnection();
 		 CreateProfile pr =new CreateProfile();
-		j.executeQuery("INSERT INTO Items VALUES (1,'cats',2.2,'a tasty cat')");
+		j.executeQuery("INSERT INTO Items VALUES (500,'cats',2.2,'a tasty cat')");
 	}
 	
   public DatabaseRunner() { 
@@ -44,7 +44,8 @@ public class DatabaseRunner {
     PreparedStatement query; 
     try { 
       query = connect.prepareStatement(SQLquery); 
-      resultSet = query.executeQuery(); 
+      query.execute();
+      //resultSet = query.executeQuery(); 
     } catch (SQLException e) { 
       e.printStackTrace(); 
     } 
