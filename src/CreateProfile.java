@@ -1,84 +1,134 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.*;
 
-public class CreateProfile extends DatabaseRunner{
-	
+public class CreateProfile extends DatabaseRunner implements ActionListener{
+	private ActionListener alCreate;
+	private JTextField username = new JTextField(),
+			password = new JTextField(),
+			latit = new JTextField(),
+			longi = new JTextField(),
+			street = new JTextField(),
+			city = new JTextField(),
+			state = new JTextField(),
+			zip = new JTextField();
 	
 	public CreateProfile() {
 		setup();
-		runthis();
 	}
 
 	private void setup() {
-		JFrame j = new JFrame();
+		JFrame j = new JFrame("Stoner's Late Night Cravings - Create User");
 		JPanel p = new JPanel(new GridBagLayout());
 		
 		j.setLayout(new BorderLayout());
 		j.add(p,BorderLayout.CENTER);
 		
 		GridBagConstraints c = new GridBagConstraints();
-		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		//c.anchor = GridBagConstraints.FIRST_LINE_START;
 		c.gridwidth=1;
 		c.gridheight=1;	
+		c.insets = new Insets(2,10,2,10);
 		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.weighty = 1;
 		
 		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		j.setTitle("Stoner's Late Night Cravings - Create User");
-		j.setSize(500,500);
+		j.setSize(1000,1000);
 		j.setLocation(500, 500);
 		
-		
-		
-		JTextField username = new JTextField("Name");
 		c.gridx=1;
 		c.gridy=0;
 		p.add(username,c);
 		
-		JTextField password = new JTextField();
 		c.gridx=1;
 		c.gridy=1;
 		p.add(password,c);
 		
-		JTextField latit = new JTextField();
 		c.gridx=1;
 		c.gridy=2;
 		p.add(latit,c);
 		
-		JTextField longi = new JTextField();
 		c.gridx=1;
 		c.gridy=3;
 		p.add(longi,c);
 		
-		JTextField street = new JTextField();
 		c.gridx=1;
 		c.gridy=4;
 		p.add(street,c);
 		
-		JTextField city = new JTextField();
 		c.gridx=1;
 		c.gridy=5;
 		p.add(city,c);
 		
-		JTextField state = new JTextField();
 		c.gridx=1;
 		c.gridy=6;
 		p.add(state,c);
 		
-		JTextField zip = new JTextField();
 		c.gridx=1;
 		c.gridy=7;
 		p.add(zip,c);
 		
+		
+		c.weightx=0;
+		c.weighty=0;
 		JLabel labUsername = new JLabel("Username:");
 		c.gridx=0;
 		c.gridy=0;
 		p.add(labUsername,c);
-		
+
 		JLabel labPassword = new JLabel("Password:");
 		c.gridx=0;
 		c.gridy=1;
 		p.add(labPassword,c);
+
+		JLabel labLatit = new JLabel("Latitude:");
+		c.gridx=0;
+		c.gridy=2;
+		p.add(labLatit,c);
+		
+
+		JLabel labLongi = new JLabel("Longitude:");
+		c.gridx=0;
+		c.gridy=3;
+		p.add(labLongi,c);
+
+		JLabel labStreet = new JLabel("Street:");
+		c.gridx=0;
+		c.gridy=4;
+		p.add(labStreet,c);
+
+		JLabel labCity = new JLabel("City:");
+		c.gridx=0;
+		c.gridy=5;
+		p.add(labCity,c);
+
+		JLabel labState = new JLabel("State:");
+		c.gridx=0;
+		c.gridy=6;
+		p.add(labState,c);
+		
+
+		JLabel labZip = new JLabel("ZIP Code:");
+		c.gridx=0;
+		c.gridy=7;
+		p.add(labZip,c);
+		
+		JLabel labEmpty =new JLabel("");
+		c.gridx=0;
+		c.gridy=8;
+		p.add(labEmpty);
+		
+		JButton btnCreate = new JButton("Create");
+		c.gridx = 1;
+		c.gridy = 8;
+		p.add(btnCreate);
+		btnCreate.addActionListener(alCreate);
+		
 
 		j.pack();
 		j.setVisible(true);
@@ -86,8 +136,23 @@ public class CreateProfile extends DatabaseRunner{
 		p.repaint();
 	}
 	
-	private void runthis() {
-		//super.executeQuery("INSERT INTO Items VALUES (1,'cats',2.2,'a tasty cat')");
+	public void CreateAccount() {
+		ResultSet rsCount = super.executeQuery("SELECT Count(*) AS n FROM User");
+		int intCount =0;
+		try {
+			intCount = rsCount.getInt("n");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		super.executeQuery("INSERT INTO User VALUES (" + intCount + ", " + username.getText() + ", " + password.getText() + ", " + zip.getText() + ", " + state.getText() + ", "  + city.getText() + ", "  + street.getText() + ", "  + latit.getText() + ", "  + longi.getText());
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource().equals(alCreate)) {
+			CreateAccount();
+		}
 	}
 }
 
