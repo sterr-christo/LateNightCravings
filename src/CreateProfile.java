@@ -1,13 +1,9 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import javax.swing.*;
 
 public class CreateProfile extends DatabaseRunner implements ActionListener{
-	private ActionListener alCreate;
 	private JTextField username = new JTextField(),
 			password = new JTextField(),
 			latit = new JTextField(),
@@ -16,6 +12,7 @@ public class CreateProfile extends DatabaseRunner implements ActionListener{
 			city = new JTextField(),
 			state = new JTextField(),
 			zip = new JTextField();
+	private JButton btnCreate = new JButton("Create");
 	
 	public CreateProfile() {
 		setup();
@@ -123,11 +120,10 @@ public class CreateProfile extends DatabaseRunner implements ActionListener{
 		c.gridy=8;
 		p.add(labEmpty);
 		
-		JButton btnCreate = new JButton("Create");
 		c.gridx = 1;
 		c.gridy = 8;
 		p.add(btnCreate);
-		btnCreate.addActionListener(alCreate);
+		btnCreate.addActionListener(this);
 		
 
 		j.pack();
@@ -137,20 +133,22 @@ public class CreateProfile extends DatabaseRunner implements ActionListener{
 	}
 	
 	public void CreateAccount() {
-		ResultSet rsCount = super.executeQuery("SELECT Count(*) AS n FROM User");
+		/*	This is how you would create the last ID in a table
+		 * 
+		 * ResultSet rsCount = super.executeQuery("SELECT Count(*) AS n FROM User");
 		int intCount =0;
 		try {
 			intCount = rsCount.getInt("n");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		super.executeQuery("INSERT INTO User VALUES (" + intCount + ", " + username.getText() + ", " + password.getText() + ", " + zip.getText() + ", " + state.getText() + ", "  + city.getText() + ", "  + street.getText() + ", "  + latit.getText() + ", "  + longi.getText());
+		}*/
+		super.executeQuery("INSERT INTO User VALUES (" + "'" + username.getText()  + "'" + ", " + "'" +  password.getText() + "'" + ", " + zip.getText() + ", " + "'" + state.getText() + "'" + ", " + "'" + city.getText() + "'" + ", "  + "'" + street.getText() + "'" + ", "  + latit.getText() + ", "  + longi.getText() + ")");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource().equals(alCreate)) {
+		if(e.getSource().equals(btnCreate)) {
 			CreateAccount();
 		}
 	}
