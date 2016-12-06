@@ -4,6 +4,10 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class CreateProfile extends DatabaseRunner implements ActionListener{
+	private int HDimension = 400, VDimension = 300;
+	private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+	private int width = gd.getDisplayMode().getWidth();
+	private int height = gd.getDisplayMode().getHeight();
 	private JTextField username = new JTextField(),
 			password = new JTextField(),
 			latit = new JTextField(),
@@ -34,9 +38,6 @@ public class CreateProfile extends DatabaseRunner implements ActionListener{
 		c.weightx = 1;
 		c.weighty = 1;
 		
-		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		j.setSize(1000,1000);
-		j.setLocation(500, 500);
 		
 		c.gridx=1;
 		c.gridy=0;
@@ -126,8 +127,11 @@ public class CreateProfile extends DatabaseRunner implements ActionListener{
 		btnCreate.addActionListener(this);
 		
 
+		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		j.pack();
 		j.setVisible(true);
+		j.setBounds( (width-HDimension)/2, (height-VDimension)/2, HDimension, VDimension );
+		p.setBackground( Color.white );
 
 		p.repaint();
 	}
