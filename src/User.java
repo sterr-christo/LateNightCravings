@@ -32,9 +32,9 @@ public class User {
 		//p.setBackground( Color.white );
 		
 		
-		//BufferedImage myImage = ImageIO.read( new File( "FAST_FOOD.jpg"));
-		//JFrame myJFrame = new JFrame("Image pane");
-		//j.setContentPane(new ImagePanel(myImage));
+//		BufferedImage myImage = ImageIO.read( new File( "FAST_FOOD.jpg"));
+//		JFrame myJFrame = new JFrame("Image pane");
+//		j.setContentPane(new ImagePanel(myImage));
 		
 		
 		

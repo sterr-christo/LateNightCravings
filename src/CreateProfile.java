@@ -116,14 +116,12 @@ public class CreateProfile extends DatabaseRunner implements ActionListener{
 		c.gridy=7;
 		p.add(labZip,c);
 		
-		JLabel labEmpty =new JLabel("");
-		c.gridx=0;
-		c.gridy=8;
-		p.add(labEmpty);
-		
-		c.gridx = 1;
-		c.gridy = 8;
-		p.add(btnCreate);
+		//Add button
+		c.gridx = 0;
+		c.weightx = 1;
+		c.gridwidth = 2;
+		c.gridy = 9;
+		p.add(btnCreate,c);
 		btnCreate.addActionListener(this);
 		
 
