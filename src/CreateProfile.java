@@ -17,7 +17,7 @@ public class CreateProfile extends DatabaseRunner implements ActionListener{
 			state = new JTextField(),
 			zip = new JTextField();
 	private JButton btnCreate = new JButton("Create");
-	
+
 	public CreateProfile() {
 		setup();
 	}
@@ -25,53 +25,53 @@ public class CreateProfile extends DatabaseRunner implements ActionListener{
 	private void setup() {
 		JFrame j = new JFrame("Stoner's Late Night Cravings - Create User");
 		JPanel p = new JPanel(new GridBagLayout());
-		
+
 		j.setLayout(new BorderLayout());
 		j.add(p,BorderLayout.CENTER);
-		
+
 		GridBagConstraints c = new GridBagConstraints();
 		//c.anchor = GridBagConstraints.FIRST_LINE_START;
 		c.gridwidth=1;
-		c.gridheight=1;	
+		c.gridheight=1;
 		c.insets = new Insets(2,10,2,10);
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1;
 		c.weighty = 1;
-		
-		
+
+
 		c.gridx=1;
 		c.gridy=0;
 		p.add(username,c);
-		
+
 		c.gridx=1;
 		c.gridy=1;
 		p.add(password,c);
-		
+
 		c.gridx=1;
 		c.gridy=2;
 		p.add(latit,c);
-		
+
 		c.gridx=1;
 		c.gridy=3;
 		p.add(longi,c);
-		
+
 		c.gridx=1;
 		c.gridy=4;
 		p.add(street,c);
-		
+
 		c.gridx=1;
 		c.gridy=5;
 		p.add(city,c);
-		
+
 		c.gridx=1;
 		c.gridy=6;
 		p.add(state,c);
-		
+
 		c.gridx=1;
 		c.gridy=7;
 		p.add(zip,c);
-		
-		
+
+
 		c.weightx=0;
 		c.weighty=0;
 		JLabel labUsername = new JLabel("Username:");
@@ -88,7 +88,7 @@ public class CreateProfile extends DatabaseRunner implements ActionListener{
 		c.gridx=0;
 		c.gridy=2;
 		p.add(labLatit,c);
-		
+
 
 		JLabel labLongi = new JLabel("Longitude:");
 		c.gridx=0;
@@ -109,13 +109,13 @@ public class CreateProfile extends DatabaseRunner implements ActionListener{
 		c.gridx=0;
 		c.gridy=6;
 		p.add(labState,c);
-		
+
 
 		JLabel labZip = new JLabel("ZIP Code:");
 		c.gridx=0;
 		c.gridy=7;
 		p.add(labZip,c);
-		
+
 		//Add button
 		c.gridx = 0;
 		c.weightx = 1;
@@ -123,7 +123,7 @@ public class CreateProfile extends DatabaseRunner implements ActionListener{
 		c.gridy = 9;
 		p.add(btnCreate,c);
 		btnCreate.addActionListener(this);
-		
+
 
 		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		j.pack();
@@ -133,10 +133,10 @@ public class CreateProfile extends DatabaseRunner implements ActionListener{
 
 		p.repaint();
 	}
-	
+
 	public void CreateAccount() {
 		/*	This is how you would create the last ID in a table
-		 * 
+		 *
 		 * ResultSet rsCount = super.executeQuery("SELECT Count(*) AS n FROM User");
 		int intCount =0;
 		try {
@@ -155,4 +155,3 @@ public class CreateProfile extends DatabaseRunner implements ActionListener{
 		}
 	}
 }
-

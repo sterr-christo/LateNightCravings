@@ -9,7 +9,7 @@ import java.nio.file.*; //this is to use Path
 public class DatabaseRunner {
 	public static Path dbpath = FileSystems.getDefault().getPath("db","LateNightCravings");
 	public static String dirPath = Paths.get("").toAbsolutePath().toString();
-	
+
 	public static String databasepath = "jdbc:sqlite:" + dirPath + "/" + dbpath;
 	public static Connection connect = null;
 
@@ -35,7 +35,7 @@ public class DatabaseRunner {
 
 	/*
 	 * @param connect: the database connection.
-	 * 
+	 *
 	 * @param query: what SQL query to execute
 	 */
 	public ResultSet executeQuery( String SQLquery) {
@@ -43,7 +43,7 @@ public class DatabaseRunner {
 			System.out.println("DEBUG(executeQuery): SQL Query: " + SQLquery);
 			String type = queryType(SQLquery);
 			PreparedStatement query;
-			
+
 			if(type.equals("SELECT")) {
 				ResultSet resultSet = null;
 				try {
@@ -64,7 +64,7 @@ public class DatabaseRunner {
 		}
 		return null;
 	}
-	
+
 	private String queryType(String SQLquery) {
 		System.out.println("DEBUG(queryType): " + SQLquery.substring(0,SQLquery.indexOf(' ')));
 		return SQLquery.substring(0,SQLquery.indexOf(' '));
