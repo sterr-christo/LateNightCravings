@@ -4,10 +4,6 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class Homepage implements ActionListener {
-	private int HDimension = 500, VDimension = 400;
-	private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-	private int width = gd.getDisplayMode().getWidth();
-	private int height = gd.getDisplayMode().getHeight();
 	private JTextField txtSearch = new JTextField(),
 			txtUsername = new JTextField(),
 			txtPassword = new JTextField();
@@ -36,7 +32,7 @@ public class Homepage implements ActionListener {
 		c.gridheight=1;
 		c.insets = new Insets(2,10,2,10);
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 0;
+		c.weightx = 1;
 		c.weighty = 1;
 		
 		c.gridx=0;
@@ -45,16 +41,14 @@ public class Homepage implements ActionListener {
 		
 		c.gridx=1;
 		c.gridy=0;
-		c.weightx = 1;
-		c.gridwidth = 2;
 		p.add(txtUsername,c);
 		
-		c.gridx=0;
-		c.gridy=1;
+		c.gridx=2;
+		c.gridy=0;
 		p.add(new JLabel("Password: "),c);
 		
-		c.gridx=1;
-		c.gridy=1;
+		c.gridx=3;
+		c.gridy=0;
 		p.add(txtPassword,c);
 		
 		c.gridx=4;
@@ -72,8 +66,8 @@ public class Homepage implements ActionListener {
 		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		j.pack();
 		j.setVisible(true);
-		j.setBounds( (width-HDimension)/2, (height-VDimension)/2, HDimension, VDimension );
-		p.setBackground(Color.white);
+		j.setBounds(0,0,500,500);
+		p.setBackground( Color.white );
 
 		p.repaint();
 	}

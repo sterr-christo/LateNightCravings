@@ -6,21 +6,17 @@ import java.sql.SQLException;
 
 import java.nio.file.*; //this is to use Path
 
-public class DatabaseRunner {
+public class DatabaseRunner extends Homepage{
 	public static Path dbpath = FileSystems.getDefault().getPath("db","LateNightCravings");
 	public static String dirPath = Paths.get("").toAbsolutePath().toString();
 
 	public static String databasepath = "jdbc:sqlite:" + dirPath + "/" + dbpath;
 	public static Connection connect = null;
 
-	public static void main(String[] args) {
+	public DatabaseRunner() {
 		connect = setupConnection();
 		//CreateProfile pr = new CreateProfile();
 		RestaurantTables tr = new RestaurantTables();
-	}
-
-	public DatabaseRunner() {
-
 	}
 
 	public static Connection setupConnection() {
@@ -41,7 +37,7 @@ public class DatabaseRunner {
 	 */
 	public ResultSet executeQuery( String SQLquery) {
 		if (connect != null) {
-//			System.out.println("DEBUG(executeQuery): SQL Query: " + SQLquery);
+			System.out.println("DEBUG(executeQuery): SQL Query: " + SQLquery);
 			String type = queryType(SQLquery);
 			PreparedStatement query;
 
@@ -67,7 +63,7 @@ public class DatabaseRunner {
 	}
 
 	private String queryType(String SQLquery) {
-//		System.out.println("DEBUG(queryType): " + SQLquery.substring(0,SQLquery.indexOf(' ')));
+		System.out.println("DEBUG(queryType): " + SQLquery.substring(0,SQLquery.indexOf(' ')));
 		return SQLquery.substring(0,SQLquery.indexOf(' '));
 	}
 
