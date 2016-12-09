@@ -22,7 +22,7 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
     
     GridBagConstraints c = new GridBagConstraints();
 
-	j.add(p);
+
 
 	
 
@@ -32,7 +32,7 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
     JLabel dummyLabel = new JLabel("empty");
     JButton dummyButton = new JButton("empty");
 
-    //c.fill = GridBagConstraints.BOTH;
+    c.fill = GridBagConstraints.BOTH;
 	c.weightx = 1;
 	c.weighty = 1;
 	c.gridwidth=1;
@@ -68,16 +68,9 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
       e.printStackTrace();
 
     }
+    
+	j.add(p);
 
-
-	
-    
-    
-    
-    
-    
-    
-    
     j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	j.pack();
 	j.setVisible(true);
