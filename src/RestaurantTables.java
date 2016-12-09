@@ -11,7 +11,7 @@ public class RestaurantTables extends DatabaseRunner {
   }
 
   private void create() {
-    JFrame window = new JFrame("Stoner's Late Night Cravings - User Panel");
+    JFrame window = new JFrame("Stoner's Late Night Cravings - Restaurants");
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     JPanel p = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
@@ -22,15 +22,25 @@ public class RestaurantTables extends DatabaseRunner {
 
 
     JTable table = new JTable();
-    String[] columnNames = {"Distance", "Name", "Genre", "Phone", "Website", "Closing Time"};
-    Object[][] data;
-    populateTable(data);
+    populateTable();
 
     p.add(table);
 
   }
-  private void populateTable(Object[][] data) {
-    ResultSet rs = super.executeQuery("SELECT count(*) FROM Restaurant");
+  private void populateTable() {
+	String[] columnNames = {"Distance", "Name", "Genre", "Phone", "Website", "Closing Time"};
+	
+    ResultSet rs = super.executeQuery("SELECT count(*) as rows FROM Restaurant");
+    int rows =0;
+	try {
+		rows = rs.getInt("rows");
+	} catch (SQLException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+    System.out.println("DEBUG(populateTable): Number of rows in Restaurant: " + rows);
+    int columns = 6;
+    Object[][] data = new Object[rows][columns];
 
 
     rs = super.executeQuery("SELECT Latitude, Name, GenreID, Phone, Website, ClosingTime");
@@ -56,7 +66,7 @@ public class RestaurantTables extends DatabaseRunner {
         i++;
       }
     } catch (SQLException e) {
-      e.close();
+      e.printStackTrace();
 
     }
   }
