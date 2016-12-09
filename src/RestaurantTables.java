@@ -1,49 +1,45 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 
 import javax.swing.*;
 
-public class RestaurantTables extends DatabaseRunner {
-
+public class RestaurantTables extends DatabaseRunner implements ActionListener	{
+	private int HDimension = 400, VDimension = 300;
+	private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+	private int width = gd.getDisplayMode().getWidth();
+	private int height = gd.getDisplayMode().getHeight();
 
   public RestaurantTables() {
     create();
   }
 
   private void create() {
-    JFrame window = new JFrame("Stoner's Late Night Cravings - Restaurants");
-    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    JFrame j = new JFrame("Stoner's Late Night Cravings - Restaurants");
     JPanel p = new JPanel(new GridBagLayout());
+    
+    
     GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.HORIZONTAL;
-    c.insets = new Insets(2,10,2,10);
 
-    window.add( p );
+	j.add(p);
 
-
-    JTable table = new JTable();
-    populateTable();
-
-    p.add(table);
-
-  }
-  private void populateTable() {
-	String[] columnNames = {"Distance", "Name", "Genre", "Phone", "Website", "Closing Time"};
 	
+
+    
     ResultSet rs = super.executeQuery("SELECT count(*) as rows FROM Restaurant");
-    int rows =0;
-	try {
-		rows = rs.getInt("rows");
-	} catch (SQLException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
-    System.out.println("DEBUG(populateTable): Number of rows in Restaurant: " + rows);
     int columns = 6;
-    Object[][] data = new Object[rows][columns];
+    JLabel dummyLabel = new JLabel("empty");
+    JButton dummyButton = new JButton("empty");
 
-
-    rs = super.executeQuery("SELECT Latitude, Name, GenreID, Phone, Website, ClosingTime");
+    //c.fill = GridBagConstraints.BOTH;
+	c.weightx = 1;
+	c.weighty = 1;
+	c.gridwidth=1;
+	c.gridheight=1;
+	c.insets = new Insets(2,10,2,10);
+    
+    rs = super.executeQuery("SELECT Latitude, Name, GenreID, Phone, Website, ClosingTime FROM Restaurant");
 
     try {
       int i = 0;
@@ -52,23 +48,52 @@ public class RestaurantTables extends DatabaseRunner {
         if(i>= columns) {
           i=0;
         }
-        data[r][i] = rs.getInt("Latitude");
+        c.gridx = i;
+        c.gridy = r;
+        p.add(new JLabel(""+ rs.getInt("Latitude")), c);
         i++;
-        data[r][i] = rs.getString("Name");
+        p.add(dummyButton = new JButton(""+rs.getString("Name")), c);
         i++;
-        data[r][i] = rs.getInt("GenreID");
+        p.add(new JLabel(""+ rs.getInt("GenreID")), c);
         i++;
-        data[r][i] = rs.getString("Phone");
+        p.add(new JLabel(""+ rs.getInt("Phone")), c);
         i++;
-        data[r][i] = rs.getString("Website");
+        p.add(new JLabel(""+ rs.getInt("Website")), c);
         i++;
-        data[r][i] = rs.getInt("ClosingTime");
+        p.add(new JLabel(""+ rs.getInt("ClosingTime")), c);
         i++;
+        r++;
       }
     } catch (SQLException e) {
       e.printStackTrace();
 
     }
+
+
+	
+    
+    
+    
+    
+    
+    
+    
+    j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	j.pack();
+	j.setVisible(true);
+	j.setBounds( (width-HDimension)/2, (height-VDimension)/2, HDimension, VDimension );
+	p.setBackground( Color.white );
+
+	p.repaint();
+
   }
+
+@Override
+public void actionPerformed(ActionEvent e) {
+	// TODO Auto-generated method stub
+	
+}
+
+
 
 }

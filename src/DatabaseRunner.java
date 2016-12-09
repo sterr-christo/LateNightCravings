@@ -15,7 +15,7 @@ public class DatabaseRunner {
 
 	public static void main(String[] args) {
 		connect = setupConnection();
-		CreateProfile pr = new CreateProfile();
+		//CreateProfile pr = new CreateProfile();
 		RestaurantTables tr = new RestaurantTables();
 	}
 
