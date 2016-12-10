@@ -28,7 +28,7 @@ public class Homepage extends DatabaseRunner implements ActionListener {
 		c.gridwidth=1;
 		c.gridheight=1;
 		c.insets = new Insets(2,10,2,10);
-		c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 0;
 		c.weighty = 1;
 		

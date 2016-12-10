@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import javax.swing.*;
 
 public class UserLogin extends DatabaseRunner implements ActionListener {
-	private JButton btnLogin = new JButton("Login");
+	private JButton btnLogin = new JButton("Login"),
+			btnRegister = new JButton("Register");
 	private JTextField txtUsername = new JTextField(), txtPassword = new JTextField();
 
 	public UserLogin() {
@@ -26,8 +27,8 @@ public class UserLogin extends DatabaseRunner implements ActionListener {
 		c.gridwidth = 1;
 		c.gridheight = 1;
 		c.insets = new Insets(2, 10, 2, 10);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 0;
+		c.fill =  GridBagConstraints.BOTH;
+		c.weightx = 1;
 		c.weighty = 1;
 
 		c.gridx = 0;
@@ -50,6 +51,15 @@ public class UserLogin extends DatabaseRunner implements ActionListener {
 		c.gridy = 4;
 		p.add(btnLogin, c);
 		btnLogin.addActionListener(this);
+		
+		c.gridx = 0;
+		c.gridy = 5;
+		p.add(btnRegister, c);
+		btnRegister.setOpaque(false);
+		btnRegister.setBackground(Color.WHITE);
+		btnRegister.setBorderPainted(false);
+		btnRegister.setForeground(new Color(0,0,238));
+		btnRegister.addActionListener(this);
 
 		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		j.pack();
@@ -65,6 +75,9 @@ public class UserLogin extends DatabaseRunner implements ActionListener {
 		// TODO Auto-generated method stub
 		if (e.getSource().equals(btnLogin)) {
 			attemptLogin();
+		}
+		if(e.getSource().equals(btnRegister)) {
+			new UserInfo();
 		}
 	}
 

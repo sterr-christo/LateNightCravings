@@ -18,15 +18,9 @@ public class UserInfo {
 	private int height = gd.getDisplayMode().getHeight();
 	private JFrame window;
 	
-	public static void main( String[] args )
-	{
-		UserInfo u = new UserInfo();
-		u.buildWindow();
-	}
-	
 	public UserInfo()
 	{
-		
+		buildWindow();
 	}
 	public void buildWindow(){
 		JFrame window = new JFrame("Stoner's Late Night Cravings - User Panel");
