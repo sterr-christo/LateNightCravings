@@ -93,6 +93,7 @@ public class UserLogin extends DatabaseRunner implements ActionListener {
 					new UserPage(txtUsername.getText());
 					j.dispose();
 				} else {
+					JOptionPane.showMessageDialog(null, "Sorry, that was not a match.","Error",JOptionPane.ERROR_MESSAGE);
 					System.out.println("DEBUG(attemptLogin): ResultSet is Null");
 
 				}

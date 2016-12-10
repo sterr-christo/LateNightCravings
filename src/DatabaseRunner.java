@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 import java.nio.file.*; //this is to use Path
 
 public class DatabaseRunner {
@@ -60,9 +62,11 @@ public class DatabaseRunner {
 					query = connect.prepareStatement(SQLquery);
 					query.execute();
 				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(null, "Sorry, something went wrong." + e.toString(),"Error",JOptionPane.ERROR_MESSAGE);
 					e.printStackTrace();
 				}
 			}
+			
 		}
 		return null;
 	}

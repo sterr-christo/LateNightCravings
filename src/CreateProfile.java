@@ -135,6 +135,7 @@ public class CreateProfile extends DatabaseRunner implements ActionListener {
 		 * =0; try { intCount = rsCount.getInt("n"); } catch (SQLException e) {
 		 * // TODO Auto-generated catch block e.printStackTrace(); }
 		 */
+		
 		super.executeQuery(
 				"INSERT INTO User VALUES (" + "'" + username.getText() + "'" + ", " + "'" + password.getText() + "'"
 						+ ", " + zip.getText() + ", " + "'" + state.getText() + "'" + ", " + "'" + city.getText() + "'"
