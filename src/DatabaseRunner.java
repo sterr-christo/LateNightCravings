@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 import java.nio.file.*; //this is to use Path
 
-public class DatabaseRunner {
+public class DatabaseRunner{
 	public static Path dbpath = FileSystems.getDefault().getPath("db","LateNightCravings");
 	public static String dirPath = Paths.get("").toAbsolutePath().toString();
 
@@ -16,7 +16,8 @@ public class DatabaseRunner {
 	public static void main(String[] args) {
 		connect = setupConnection();
 		//CreateProfile pr = new CreateProfile();
-		RestaurantTables tr = new RestaurantTables();
+		//RestaurantTables tr = new RestaurantTables();
+		new Homepage();
 	}
 
 	public DatabaseRunner() {
@@ -41,7 +42,7 @@ public class DatabaseRunner {
 	 */
 	public ResultSet executeQuery( String SQLquery) {
 		if (connect != null) {
-//			System.out.println("DEBUG(executeQuery): SQL Query: " + SQLquery);
+			System.out.println("DEBUG(executeQuery): SQL Query: " + SQLquery);
 			String type = queryType(SQLquery);
 			PreparedStatement query;
 

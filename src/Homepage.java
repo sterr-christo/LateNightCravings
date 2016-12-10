@@ -3,28 +3,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class Homepage implements ActionListener {
+public class Homepage extends DatabaseRunner implements ActionListener {
 	private int HDimension = 500, VDimension = 400;
 	private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	private int width = gd.getDisplayMode().getWidth();
 	private int height = gd.getDisplayMode().getHeight();
-	private JTextField txtSearch = new JTextField(),
-			txtUsername = new JTextField(),
-			txtPassword = new JTextField();
+	private JTextField txtSearch = new JTextField();
 	private JButton btnSearch = new JButton("Find food near me!"),
 			btnLogin = new JButton("Login");
-	
-	
-	public static void main(String[] args) {
-		Homepage hp = new Homepage();
-	}
 	
 	public Homepage() {
 		create();
 	}
 	
 	private void create() {
-		JFrame j = new JFrame("Stoner's Late Night Cravings - Create User");
+		JFrame j = new JFrame("Stoner's Late Night Cravings - Feed your wild side");
 		JPanel p = new JPanel(new GridBagLayout());
 
 		j.setLayout(new BorderLayout());
@@ -39,27 +32,10 @@ public class Homepage implements ActionListener {
 		c.weightx = 0;
 		c.weighty = 1;
 		
-		c.gridx=0;
-		c.gridy=0;
-		p.add(new JLabel("Username: "),c);
-		
-		c.gridx=1;
-		c.gridy=0;
-		c.weightx = 1;
-		c.gridwidth = 2;
-		p.add(txtUsername,c);
-		
-		c.gridx=0;
-		c.gridy=1;
-		p.add(new JLabel("Password: "),c);
-		
-		c.gridx=1;
-		c.gridy=1;
-		p.add(txtPassword,c);
-		
 		c.gridx=4;
 		c.gridy=0;
 		p.add(btnLogin,c);
+		btnLogin.addActionListener(this);
 		
 		c.gridx=2;
 		c.gridy=2;
@@ -80,7 +56,9 @@ public class Homepage implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		if(e.getSource().equals(btnLogin)) {
+			new UserLogin();
+		}
 		
 	}
 }
