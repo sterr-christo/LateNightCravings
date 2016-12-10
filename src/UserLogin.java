@@ -77,7 +77,7 @@ public class UserLogin extends DatabaseRunner implements ActionListener {
 			attemptLogin();
 		}
 		if(e.getSource().equals(btnRegister)) {
-			new UserInfo();
+			new CreateProfile();
 		}
 	}
 
