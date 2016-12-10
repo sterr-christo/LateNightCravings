@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 import java.nio.file.*; //this is to use Path
 
-public class DatabaseRunner{
-	public static Path dbpath = FileSystems.getDefault().getPath("db","LateNightCravings");
+public class DatabaseRunner {
+	public static Path dbpath = FileSystems.getDefault().getPath("db", "LateNightCravings");
 	public static String dirPath = Paths.get("").toAbsolutePath().toString();
 
 	public static String databasepath = "jdbc:sqlite:" + dirPath + "/" + dbpath;
@@ -15,8 +15,8 @@ public class DatabaseRunner{
 
 	public static void main(String[] args) {
 		connect = setupConnection();
-		//CreateProfile pr = new CreateProfile();
-		//RestaurantTables tr = new RestaurantTables();
+		// CreateProfile pr = new CreateProfile();
+		// RestaurantTables tr = new RestaurantTables();
 		new Homepage();
 	}
 
@@ -40,13 +40,13 @@ public class DatabaseRunner{
 	 *
 	 * @param query: what SQL query to execute
 	 */
-	public ResultSet executeQuery( String SQLquery) {
+	public ResultSet executeQuery(String SQLquery) {
 		if (connect != null) {
 			System.out.println("DEBUG(executeQuery): SQL Query: " + SQLquery);
 			String type = queryType(SQLquery);
 			PreparedStatement query;
 
-			if(type.equals("SELECT")) {
+			if (type.equals("SELECT")) {
 				ResultSet resultSet = null;
 				try {
 					query = connect.prepareStatement(SQLquery);
@@ -68,8 +68,9 @@ public class DatabaseRunner{
 	}
 
 	private String queryType(String SQLquery) {
-//		System.out.println("DEBUG(queryType): " + SQLquery.substring(0,SQLquery.indexOf(' ')));
-		return SQLquery.substring(0,SQLquery.indexOf(' '));
+		// System.out.println("DEBUG(queryType): " +
+		// SQLquery.substring(0,SQLquery.indexOf(' ')));
+		return SQLquery.substring(0, SQLquery.indexOf(' '));
 	}
 
 }

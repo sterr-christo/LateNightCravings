@@ -12,6 +12,7 @@ public class CreateProfile extends DatabaseRunner implements ActionListener {
 			longi = new JTextField(), street = new JTextField(), city = new JTextField(), state = new JTextField(),
 			zip = new JTextField();
 	private JButton btnCreate = new JButton("Create");
+	private JFrame j = new JFrame("Stoner's Late Night Cravings - Create User");
 
 	public CreateProfile(String Username, String Password) {
 		username.setText(Username);
@@ -20,7 +21,7 @@ public class CreateProfile extends DatabaseRunner implements ActionListener {
 	}
 
 	private void setup() {
-		JFrame j = new JFrame("Stoner's Late Night Cravings - Create User");
+		
 		JPanel p = new JPanel(new GridBagLayout());
 
 		j.setLayout(new BorderLayout());
@@ -117,7 +118,6 @@ public class CreateProfile extends DatabaseRunner implements ActionListener {
 		p.add(btnCreate, c);
 		btnCreate.addActionListener(this);
 
-		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		j.pack();
 		j.setVisible(true);
 		j.setBounds((width - HDimension) / 2, (height - VDimension) / 2, HDimension, VDimension);
@@ -139,6 +139,7 @@ public class CreateProfile extends DatabaseRunner implements ActionListener {
 				"INSERT INTO User VALUES (" + "'" + username.getText() + "'" + ", " + "'" + password.getText() + "'"
 						+ ", " + zip.getText() + ", " + "'" + state.getText() + "'" + ", " + "'" + city.getText() + "'"
 						+ ", " + "'" + street.getText() + "'" + ", " + latit.getText() + ", " + longi.getText() + ")");
+		j.dispose();
 	}
 
 	@Override

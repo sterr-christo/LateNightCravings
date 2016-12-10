@@ -9,13 +9,14 @@ import javax.swing.*;
 public class UserLogin extends DatabaseRunner implements ActionListener {
 	private JButton btnLogin = new JButton("Login"), btnRegister = new JButton("Register");
 	private JTextField txtUsername = new JTextField(), txtPassword = new JTextField();
-
+	private JFrame j = new JFrame("Stoner's Late Night Cravings - Login");
+	
 	public UserLogin() {
 		create();
 	}
 
 	private void create() {
-		JFrame j = new JFrame("Stoner's Late Night Cravings - Login");
+		
 		JPanel p = new JPanel(new GridBagLayout());
 
 		j.setLayout(new BorderLayout());
@@ -80,7 +81,7 @@ public class UserLogin extends DatabaseRunner implements ActionListener {
 		}
 	}
 
-	private boolean attemptLogin() {
+	private void attemptLogin() {
 		System.out.println("DEBUG(attemptLogin): attempting login");
 		ResultSet rs = super.executeQuery("SELECT * FROM User WHERE Username = '" + txtUsername.getText()
 				+ "' AND Password = '" + txtPassword.getText() + "'");
@@ -89,10 +90,10 @@ public class UserLogin extends DatabaseRunner implements ActionListener {
 			if (!(rs.isClosed())) {
 				if (rs.getString("Username").contains(txtUsername.getText())) {
 					System.out.println("DEBUG(attemptLogin): Login credentials OK");
-					return true;
+					new UserPage(txtUsername.getText());
+					j.dispose();
 				} else {
 					System.out.println("DEBUG(attemptLogin): ResultSet is Null");
-					return false;
 
 				}
 			}
@@ -100,7 +101,6 @@ public class UserLogin extends DatabaseRunner implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return false;
 	}
 
 }

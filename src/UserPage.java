@@ -98,8 +98,6 @@ public class UserPage extends DatabaseRunner implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		j.pack();
 		j.setVisible(true);
 		j.setBounds(100, 100, 500, 500);
