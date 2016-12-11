@@ -89,6 +89,7 @@ public class UserLogin extends DatabaseRunner implements ActionListener {
 			if (!(rs.isClosed())) {
 				if (rs.getString("Username").contains(txtUsername.getText())) {
 					System.out.println("DEBUG(attemptLogin): Login credentials OK");
+					super.LoggedInUsername = txtUsername.getText();
 					new UserPage(txtUsername.getText());
 					j.dispose();
 				} else {

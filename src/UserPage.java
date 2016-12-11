@@ -2,6 +2,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 import java.sql.*;
 
 public class UserPage extends DatabaseRunner implements ActionListener {
@@ -9,6 +11,7 @@ public class UserPage extends DatabaseRunner implements ActionListener {
 	private JTextField txtStreet = new JTextField(), txtCity = new JTextField(), txtState = new JTextField(),
 			txtZip = new JTextField(), txtLatitude = new JTextField(), txtLongitude = new JTextField();
 	private JToggleButton tglEdit = new JToggleButton("Edit Info");
+	private JTable tblReviews = new JTable();
 
 	public UserPage(String Username) {
 		username = Username;
@@ -92,6 +95,13 @@ public class UserPage extends DatabaseRunner implements ActionListener {
 				c.gridy = 0;
 				tglEdit.addActionListener(this);
 				p.add(tglEdit, c);
+				
+				c.gridx=0;
+				c.gridy = 4;
+				c.gridwidth=4;
+				populateTable();
+				p.add(tblReviews, c);
+				
 
 			}
 		} catch (SQLException e) {
@@ -133,6 +143,23 @@ public class UserPage extends DatabaseRunner implements ActionListener {
 		txtZip.setEnabled(!(txtZip.isEnabled()));
 		txtLatitude.setEnabled(!(txtLatitude.isEnabled()));
 		txtLongitude.setEnabled(!(txtLongitude.isEnabled()));
+	}
+	private void populateTable() {
+		ResultSet rs = super.executeQuery("SELECT * FROM Review WHERE Username = '" + username + "'");
+		try {
+			while(rs.next()) {
+				
+				
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
 	}
 
 }

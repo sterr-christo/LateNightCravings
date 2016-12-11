@@ -14,6 +14,7 @@ public class DatabaseRunner {
 
 	public static String databasepath = "jdbc:sqlite:" + dirPath + "/" + dbpath;
 	public static Connection connect = null;
+	public String LoggedInUsername = null;
 
 	public static void main(String[] args) {
 		connect = setupConnection();
