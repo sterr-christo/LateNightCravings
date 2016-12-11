@@ -12,7 +12,6 @@ public class UserPage extends DatabaseRunner implements ActionListener {
 	private JTextField txtStreet = new JTextField(), txtCity = new JTextField(), txtState = new JTextField(),
 			txtZip = new JTextField(), txtLatitude = new JTextField(), txtLongitude = new JTextField();
 	private JToggleButton tglEdit = new JToggleButton("Edit Info");
-	private JTable tblReviews;
 	private JFrame j = new JFrame("Stoner's Late Night Cravings - User Panel");
 	private JPanel p = new JPanel(new GridBagLayout());
 	private GridBagConstraints c = new GridBagConstraints();
@@ -23,13 +22,10 @@ public class UserPage extends DatabaseRunner implements ActionListener {
 	}
 
 	private void create() {
-		
-		
 
 		j.setLayout(new BorderLayout());
 		j.add(p, BorderLayout.CENTER);
 
-		
 		// c.anchor = GridBagConstraints.FIRST_LINE_START;
 		c.gridwidth = 1;
 		c.gridheight = 1;
@@ -104,9 +100,8 @@ public class UserPage extends DatabaseRunner implements ActionListener {
 				c.gridy = 4;
 				c.gridwidth = 5;
 				populateTable();
-				
-				
-				//pane2.add(tblReviews, c);
+
+				// pane2.add(tblReviews, c);
 
 			}
 		} catch (SQLException e) {
@@ -147,40 +142,37 @@ public class UserPage extends DatabaseRunner implements ActionListener {
 	}
 
 	private void populateTable() {
-		String comments;
+		String comments,restauraunt;
 		int rating;
-		
-		JTable table = new JTable(new DefaultTableModel(new Object[]{"Comments", "Rating" },0));
+
+		JTable table = new JTable(new DefaultTableModel(new Object[] { "Comments", "Rating" }, 0));
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
-	    	
-		ResultSet set = executeQuery("SELECT Comments, Rating FROM Review WHERE Username = '" + username + "'");
-		
-	    try 
-	    {
-	    	while( set.next() ) 
-	    	{
-	    		comments = set.getString( "Comments" );
-	    		rating = set.getInt( "Rating" );
-				model.addRow(new Object[]{ comments, rating });
-	      }
-	    }
-	    catch (SQLException e) 
-	    {
-	      e.printStackTrace();
-	    }
-	    
-	    //Setup JFrame so it's scrollable, has centered text in the rating column and text wrapping in review column
-	    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-	    centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-	    table.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
-	    
-	    table.getColumnModel().getColumn(0).setCellRenderer(new WordWrapCellRenderer());
-	    
-	    JScrollPane pane = new JScrollPane( table );
-	    pane.getViewport().setBackground( Color.white );
-		p.add( pane, c );
+
+		ResultSet set = executeQuery("SELECT Review.Comments, Review.Rating,  Restaurant.Name FROM Review LEFT JOIn Restaurant ON RestaurantID WHERE Review.Username = '" + username + "'");
+
+		try {
+			while (set.next()) {
+				restauraunt = set.getString("RestaurantID");
+				comments = set.getString("Comments");
+				rating = set.getInt("Rating");
+				model.addRow(new Object[] {restauraunt, comments, rating });
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		// Setup JFrame so it's scrollable, has centered text in the rating
+		// column and text wrapping in review column
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+
+		table.getColumnModel().getColumn(0).setCellRenderer(new WordWrapCellRenderer());
+
+		JScrollPane pane = new JScrollPane(table);
+		pane.getViewport().setBackground(Color.white);
+		p.add(pane, c);
 	}
 
-
-//end of the class
+	// end of the class
 }
