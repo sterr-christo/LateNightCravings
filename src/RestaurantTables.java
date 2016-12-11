@@ -3,6 +3,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.LinkedList;
 
 import javax.swing.*;
@@ -12,7 +14,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public class RestaurantTables extends DatabaseRunner implements ActionListener	{
-	private int HDimension = 500, VDimension = 400;
+	private int HDimension = 750, VDimension = 400;
 	private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	private int width = gd.getDisplayMode().getWidth();
 	private int height = gd.getDisplayMode().getHeight();
@@ -24,34 +26,57 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 	private void create() {
 		LinkedList<String> names = new LinkedList<String>();
 		LinkedList<Integer> ids = new LinkedList<Integer>();
+		Hashtable<String,Integer> idHash = new Hashtable<String, Integer>();
 		
-		String name, website;
-		int latitude, genreId, phone, closingTime, restaurantId;
+		String name, website, phone, distanceDisplay, delivers;
+		int rowNum, latitude, longitude, genreId, closingTime, restaurantId, userLat, userLong, delivery;
+		double distance;
 		
 		JFrame frame = new JFrame("Stoner's Late Night Cravings - Restaurants");
-		JTable table = new JTable(new DefaultTableModel(new Object[]{"Latitude", "Name", "GenreID","Phone","Website","ClosingTime"},0));
+		JTable table = new JTable(new DefaultTableModel(new Object[]{"Distance", "Name","Delivery", "GenreID","Phone","Website","ClosingTime"},0));
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
-	        
-	    ResultSet rs = super.executeQuery("SELECT count(*) as rows FROM Restaurant");
 	    
-	    rs = super.executeQuery("SELECT Latitude, Name, GenreID, RestaurantID, Phone, Website, ClosingTime FROM Restaurant");
+	    ResultSet userRs = super.executeQuery("SELECT Latitude, Longitude FROM User WHERE Username = '" + super.LoggedInUsername +"'");
+	    
+	    ResultSet rs = super.executeQuery("SELECT Latitude, Longitude, Delivery, Name, GenreID, RestaurantID, Phone, Website, ClosingTime FROM Restaurant");
 	
 	    try 
 	    {
+	    	rowNum = 0;
 	    	while( rs.next() ) 
 	    	{
+	    	    userLat = userRs.getInt( "Latitude" );
+	    	    userLong = userRs.getInt( "Longitude" );
+	    		
+	    	    //Calculate and format distance
 				latitude = rs.getInt("Latitude");
+				longitude = rs.getInt("Latitude");
+				distance = Math.sqrt( Math.pow(userLat-latitude,2) + Math.pow(userLong-longitude, 2) );
+				int temp = (int)(10*distance);
+				temp = temp%10;
+				distanceDisplay = (int)distance+"."+temp;
+				
+				//Format delivery
+				delivery = rs.getInt( "Delivery" );
+				if ( delivery == 1 )
+					delivers = "No";
+				else
+					delivers = "Yes";
+				
+				//Format the rest of the parameters
 				name = rs.getString("Name");
 				genreId = rs.getInt("GenreID");
 				restaurantId = rs.getInt("RestaurantID");
-				phone = rs.getInt("Phone");
+				phone = rs.getString("Phone");
 				website =  rs.getString("Website");
 				closingTime = rs.getInt("ClosingTime");
 				
-				model.addRow(new Object[]{ latitude, name, genreId, phone, website, closingTime });
+				model.addRow(new Object[]{ distanceDisplay, name, delivers, genreId, phone, website, closingTime });
 				
-				names.add( name );
-				ids.add( restaurantId );
+//				names.add( name );
+//				ids.add( restaurantId );
+				idHash.put(name, restaurantId);
+				rowNum++;
 	      }
 	    }
 	    catch (SQLException e) 
@@ -83,11 +108,18 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 	    table.addMouseListener( new java.awt.event.MouseAdapter() {
 	    	public void mouseClicked( MouseEvent e ){
 	    		int row = table.rowAtPoint(e.getPoint());
+	    		int col = table.columnAtPoint(e.getPoint());
 	    		
-	    		String name = names.get( row );
-	    		int id = ids.get( row );
+	    		//this is hardcoded to the name column
+	    		String name = (String)table.getModel().getValueAt(row, 1);
 	    		
-	    		SetupReviewTable( id, name );
+	    		int id = idHash.get( name );
+	    		System.out.println("" + name + " " + id);
+	    		
+	    		if ( col == 0 )
+	    			SetupMenuTable( id, name );
+	    		else
+	    			SetupReviewTable( id, name );
 	    		
 	    	}
 	    });
@@ -141,10 +173,55 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 		frame.repaint();
 	}
 	
+	private void SetupMenuTable( int id, String restaurantName )
+	{
+		String name;
+		int price;
+		
+		JFrame frame = new JFrame( restaurantName );
+		JTable table = new JTable(new DefaultTableModel(new Object[]{"Item Name", "Price" },0));
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+    	
+		ResultSet set = executeQuery("SELECT Name, Price "
+									+ "FROM Serves NATURAL JOIN Items "
+									+ "WHERE RestaurantId = " + id );
+		
+	    try 
+	    {
+	    	while( set.next() ) 
+	    	{
+	    		name = set.getString( "Name" );
+	    		price = set.getInt( "Price" );
+				model.addRow(new Object[]{ name, price });
+	      }
+	    }
+	    catch (SQLException e) 
+	    {
+	      e.printStackTrace();
+	    }
+	    
+	    //Setup JFrame so it's scrollable, has centered text in the rating column and text wrapping in review column
+	    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+	    centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+	    table.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
+	    
+	    table.getColumnModel().getColumn(0).setCellRenderer(new WordWrapCellRenderer());
+	    
+	    JScrollPane pane = new JScrollPane( table );
+	    pane.getViewport().setBackground( Color.white );
+		frame.add( pane );
+		frame.pack();
+		frame.setVisible(true);
+		frame.setBounds( (width-HDimension)/2, (height-VDimension)/2, HDimension, VDimension );
+		frame.getContentPane().setBackground( Color.white );
+	
+		frame.repaint();
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 }
