@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 	private int HDimension = 500, VDimension = 400;
@@ -22,6 +24,7 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 	private void create() {
 		LinkedList<String> names = new LinkedList<String>();
 		LinkedList<Integer> ids = new LinkedList<Integer>();
+		
 		String name, website;
 		int latitude, genreId, phone, closingTime, restaurantId;
 		
@@ -56,6 +59,16 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 	      e.printStackTrace();
 	    }
 	
+	    
+	    //Make the table sortable
+	    TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
+	    table.setRowSorter(sorter);
+	    LinkedList<RowSorter.SortKey> sortKeys = new LinkedList<RowSorter.SortKey>();
+	    sortKeys.add(new RowSorter.SortKey(4, SortOrder.ASCENDING));
+	    sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+	    sorter.setSortKeys(sortKeys);
+	    
+	    //Setup the JFrame
 	    JScrollPane pane = new JScrollPane( table );
 	    pane.getViewport().setBackground( Color.white );
 		frame.add( pane );
