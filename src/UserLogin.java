@@ -61,7 +61,6 @@ public class UserLogin extends DatabaseRunner implements ActionListener {
 		btnRegister.setForeground(new Color(0, 0, 238));
 		btnRegister.addActionListener(this);
 
-		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		j.pack();
 		j.setVisible(true);
 		j.setBounds(100, 100, 500, 500);
@@ -93,10 +92,12 @@ public class UserLogin extends DatabaseRunner implements ActionListener {
 					new UserPage(txtUsername.getText());
 					j.dispose();
 				} else {
-					JOptionPane.showMessageDialog(null, "Sorry, that was not a match.","Error",JOptionPane.ERROR_MESSAGE);
-					System.out.println("DEBUG(attemptLogin): ResultSet is Null");
+					
 
 				}
+			} else {
+			JOptionPane.showMessageDialog(null, "Sorry, that was not a match.","Error",JOptionPane.ERROR_MESSAGE);
+			System.out.println("DEBUG(attemptLogin): ResultSet is Null");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
