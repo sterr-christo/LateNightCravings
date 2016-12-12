@@ -18,8 +18,12 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 	private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	private int width = gd.getDisplayMode().getWidth();
 	private int height = gd.getDisplayMode().getHeight();
+	private int Latitude, Longitude;
 
-	public RestaurantTables() {
+	public RestaurantTables(int Lat, int Longi) {
+			Latitude = Lat;
+			Longitude = Longi;
+			System.out.println("DEBUG(RestaurauntTables): Your location is " + Latitude + ", " + Longitude);
 	    create();
 	}
   
@@ -35,9 +39,11 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 		JFrame frame = new JFrame("Stoner's Late Night Cravings - Restaurants");
 		JTable table = new JTable(new DefaultTableModel(new Object[]{"Distance", "Name","Delivery", "GenreID","Phone","Website","ClosingTime"},0));
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
-	    
-	    ResultSet userRs = super.executeQuery("SELECT Latitude, Longitude FROM User WHERE Username = '" + super.LoggedInUsername +"'");
-	    
+		ResultSet userRs = null;
+		
+		if(LoggedInUsername != null) {
+	    userRs = super.executeQuery("SELECT Latitude, Longitude FROM User WHERE Username = '" + LoggedInUsername +"'");
+		}
 	    ResultSet rs = super.executeQuery("SELECT Latitude, Longitude, Delivery, Name, GenreID, RestaurantID, Phone, Website, ClosingTime FROM Restaurant");
 	
 	    try 
@@ -45,8 +51,13 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 	    	rowNum = 0;
 	    	while( rs.next() ) 
 	    	{
-	    	    userLat = userRs.getInt( "Latitude" );
+	    	    if(LoggedInUsername != null) {
+	    		userLat = userRs.getInt( "Latitude" );
 	    	    userLong = userRs.getInt( "Longitude" );
+	    	    } else {
+	    	    	userLat = Latitude;
+	    	    	userLong= Longitude;
+	    	    }
 	    		
 	    	    //Calculate and format distance
 				latitude = rs.getInt("Latitude");

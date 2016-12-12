@@ -1,15 +1,28 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.awt.event.*;
+import java.util.*;
 import javax.swing.*;
 
-public class Homepage extends DatabaseRunner implements ActionListener {
+public class Homepage extends DatabaseRunner implements ActionListener, FocusListener, KeyListener {
 	private int HDimension = 500, VDimension = 400;
 	private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	private int width = gd.getDisplayMode().getWidth();
 	private int height = gd.getDisplayMode().getHeight();
-	private JTextField txtSearch = new JTextField();
-	private JButton btnSearch = new JButton("Find food near me!"), btnLogin = new JButton("Login");
+	private JButton btnSearch = new JButton("Find food near me!"), btnLogin = new JButton("Login"),
+			btnLocation = new JButton("Get Location"), btnAdvanced = new JButton("Advanced Search");
+	private JLabel labUser = new JLabel();
+	private JComboBox cboSearch = new JComboBox();
+	private JTextField txtSearch = (JTextField) cboSearch.getEditor().getEditorComponent();
+	private final Vector<String> v = new Vector<String>();
+	private boolean hide_flag = false;
 
 	public Homepage() {
 		create();
@@ -31,6 +44,10 @@ public class Homepage extends DatabaseRunner implements ActionListener {
 		c.weightx = 0;
 		c.weighty = 1;
 
+		c.gridx = 3;
+		c.gridy = 0;
+		p.add(labUser, c);
+
 		c.gridx = 4;
 		c.gridy = 0;
 		p.add(btnLogin, c);
@@ -38,11 +55,33 @@ public class Homepage extends DatabaseRunner implements ActionListener {
 
 		c.gridx = 2;
 		c.gridy = 2;
-		p.add(txtSearch, c);
+		p.add(cboSearch, c);
+		cboSearch.setEditable(true);
+		txtSearch.addKeyListener(this);
+
+		c.gridx = 3;
+		c.gridy = 2;
+		p.add(btnLocation, c);
+		btnLocation.addActionListener(this);
 
 		c.gridx = 2;
 		c.gridy = 3;
 		p.add(btnSearch, c);
+		btnSearch.setEnabled(false);
+
+		c.gridx = 2;
+		c.gridy = 4;
+		p.add(btnAdvanced, c);
+		btnAdvanced.setOpaque(false);
+		btnAdvanced.setBackground(Color.WHITE);
+		btnAdvanced.setBorderPainted(false);
+		btnAdvanced.setForeground(new Color(0, 0, 238));
+		btnAdvanced.addActionListener(this);
+
+		// testing zone
+		populateAL();
+		setModel(new DefaultComboBoxModel(v), "");
+		// testing zone
 
 		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		j.pack();
@@ -55,9 +94,149 @@ public class Homepage extends DatabaseRunner implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(btnSearch)) {
+			int lat = 0;
+			int longi = 0;
+			ResultSet userRs = super.executeQuery(
+					"SELECT Latitude, Longitude FROM User WHERE Username = '" + LoggedInUsername + "'");
+			try {
+				lat = userRs.getInt("Latitude");
+				longi = userRs.getInt("Longitude");
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			new RestaurantTables(lat, longi);
+		}
 		if (e.getSource().equals(btnLogin)) {
 			new UserLogin();
 		}
+		if (e.getSource().equals(btnLocation)) {
+			int lat = new Random().nextInt(60);
+			int longi = new Random().nextInt(95);
+			new RestaurantTables(lat, longi);
+		}
+		if (e.getSource().equals(btnAdvanced)) {
 
+		}
+
+	}
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		if (LoggedInUsername != null) {
+			btnSearch.setEnabled(true);
+			labUser.setText(LoggedInUsername);
+		}
+
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		String text = txtSearch.getText();
+		if (text.length() == 0) {
+			cboSearch.hidePopup();
+			setModel(new DefaultComboBoxModel(v), "");
+		} else {
+			DefaultComboBoxModel m = getSuggestedModel(v, text);
+			if (m.getSize() == 0 || hide_flag) {
+				cboSearch.hidePopup();
+				hide_flag = false;
+			} else {
+				setModel(m, text);
+				cboSearch.showPopup();
+			}
+		}
+	}
+
+	private static DefaultComboBoxModel getSuggestedModel(java.util.List<String> list, String text) {
+		DefaultComboBoxModel m = new DefaultComboBoxModel();
+		for (String s : list) {
+			if (s.startsWith(text))
+				m.addElement(s);
+		}
+		return m;
+	}
+
+	private void setModel(DefaultComboBoxModel mdl, String str) {
+		cboSearch.setModel(mdl);
+		cboSearch.setSelectedIndex(-1);
+		txtSearch.setText(str);
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		String text = txtSearch.getText();
+		int code = e.getKeyCode();
+		if (code == KeyEvent.VK_ESCAPE) {
+			hide_flag = true;
+		} else if (code == KeyEvent.VK_RIGHT) {
+			for (int i = 0; i < v.size(); i++) {
+				String str = v.elementAt(i);
+				if (str.startsWith(text)) {
+					cboSearch.setSelectedIndex(-1);
+					txtSearch.setText(str);
+					return;
+				}
+			}
+		} else if (code == KeyEvent.VK_BACK_SPACE) {
+			txtSearch.setText("");
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void populateAL() {
+		ArrayList<String> keywords = new ArrayList<>();
+		ResultSet Index = super.executeQuery("SELECT Name FROM Genre");
+		try {
+			while (Index.next()) {
+				keywords.add(Index.getString("Name"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Index = super.executeQuery("SELECT Name FROM Restaurant");
+		try {
+			while (Index.next()) {
+				keywords.add(Index.getString("Name"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Index = super.executeQuery("SELECT Name FROM Items");
+		try {
+			while (Index.next()) {
+				keywords.add(Index.getString("Name"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Index = super.executeQuery("SELECT Username FROM User");
+		try {
+			while (Index.next()) {
+				keywords.add(Index.getString("Username"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for (int i = 0; i < keywords.size(); i++) {
+			v.addElement(keywords.get(i));
+		}
 	}
 }
