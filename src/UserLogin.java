@@ -8,7 +8,8 @@ import javax.swing.*;
 
 public class UserLogin extends DatabaseRunner implements ActionListener {
 	private JButton btnLogin = new JButton("Login"), btnRegister = new JButton("Register");
-	private JTextField txtUsername = new JTextField(), txtPassword = new JTextField();
+	private JTextField txtUsername = new JTextField();
+	private JPasswordField pwdPassword = new JPasswordField();
 	private JFrame j = new JFrame("Stoner's Late Night Cravings - Login");
 	
 	public UserLogin() {
@@ -45,7 +46,7 @@ public class UserLogin extends DatabaseRunner implements ActionListener {
 
 		c.gridx = 0;
 		c.gridy = 3;
-		p.add(txtPassword, c);
+		p.add(pwdPassword, c);
 
 		c.gridx = 0;
 		c.gridy = 4;
@@ -76,14 +77,16 @@ public class UserLogin extends DatabaseRunner implements ActionListener {
 			attemptLogin();
 		}
 		if (e.getSource().equals(btnRegister)) {
-			new CreateProfile(txtUsername.getText(), txtPassword.getText());
+			String password = new String(pwdPassword.getPassword());
+			new CreateProfile(txtUsername.getText(), password);
 		}
 	}
 
 	private void attemptLogin() {
 		System.out.println("DEBUG(attemptLogin): attempting login");
+		String password = new String(pwdPassword.getPassword());
 		ResultSet rs = super.executeQuery("SELECT * FROM User WHERE Username = '" + txtUsername.getText()
-				+ "' AND Password = '" + txtPassword.getText() + "'");
+				+ "' AND Password = '" + password + "'");
 
 		try {
 			if (!(rs.isClosed())) {

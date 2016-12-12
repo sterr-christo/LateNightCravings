@@ -145,14 +145,20 @@ public class UserPage extends DatabaseRunner implements ActionListener {
 		String comments,restauraunt;
 		int rating;
 
-		JTable table = new JTable(new DefaultTableModel(new Object[] { "Comments", "Rating" }, 0));
+		JTable table = new JTable(new DefaultTableModel(new Object[] {"Restaurant", "Comments", "Rating" }, 0));
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 
-		ResultSet set = executeQuery("SELECT Review.Comments, Review.Rating,  Restaurant.Name FROM Review LEFT JOIn Restaurant ON RestaurantID WHERE Review.Username = '" + username + "'");
-
+		ResultSet set = executeQuery("SELECT Comments, Rating,  Name"
+				+ 					" FROM "
+				+ 					"(SELECT *"
+				+ 					" FROM Review"
+				+ 					" WHERE Username = '" + username + "') "
+				+ " AS a INNER JOIN Restaurant AS e ON e.RestaurantID = a.RestaurantID");
+					
+		
 		try {
 			while (set.next()) {
-				restauraunt = set.getString("RestaurantID");
+				restauraunt = set.getString("Name");
 				comments = set.getString("Comments");
 				rating = set.getInt("Rating");
 				model.addRow(new Object[] {restauraunt, comments, rating });
@@ -171,6 +177,8 @@ public class UserPage extends DatabaseRunner implements ActionListener {
 
 		JScrollPane pane = new JScrollPane(table);
 		pane.getViewport().setBackground(Color.white);
+		pane.setVisible(true);
+		
 		p.add(pane, c);
 	}
 
