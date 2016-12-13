@@ -5,9 +5,12 @@ import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,15 +19,20 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class RestaurantPage extends DatabaseRunner{
+public class RestaurantPage extends DatabaseRunner implements ActionListener{
 	private int HDimension = 750, VDimension = 400;
 	private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	private int width = gd.getDisplayMode().getWidth();
 	private int height = gd.getDisplayMode().getHeight();
 	private GridBagConstraints c = new GridBagConstraints();
 	private JFrame frame;
+	private JButton btnReviewCreate = new JButton("Write Review");
+	private int ID;
+	private String NAME;
 	
 	public RestaurantPage(int id, String name) {
+		ID =id;
+		NAME = name;
 		Setup(id,name);
 	}
 
@@ -121,27 +129,21 @@ public class RestaurantPage extends DatabaseRunner{
 		
 		
 		try {
-			c.gridx=0;
 			c.gridy=0;
 			p.add(new JLabel(rs.getString("Name")),c );
 			
-			c.gridx=0;
 			c.gridy=1;
 			p.add(new JLabel(rs.getString("Phone")),c );
 			
-			c.gridx=0;
 			c.gridy=2;
 			p.add(new JLabel(rs.getString("Street")),c );
 			
-			c.gridx=0;
 			c.gridy=3;
 			p.add(new JLabel(rs.getString("City") + " " + rs.getString("State") + " "  + rs.getString("Zip")),c );
 			
-			c.gridx=0;
 			c.gridy=4;
-			p.add(new JLabel(rs.getString("Website")),c );
-			
-			c.gridx=0;
+			p.add(new JLabel(rs.getString("Website")),c );			
+
 			c.gridy=5;
 			p.add(new JLabel("Delivery: " +  rs.getInt("Delivery")),c );
 		} catch (SQLException e) {
@@ -150,9 +152,12 @@ public class RestaurantPage extends DatabaseRunner{
 		}
 		
 		
-		c.gridx=0;
 		c.gridy=6;
 		p.add(new JLabel("Menu: "),c);
+		
+		c.gridy=9;
+		p.add(btnReviewCreate,c);
+		btnReviewCreate.addActionListener(this);
 		
 		frame.pack();
 		frame.setVisible(true);
@@ -160,5 +165,14 @@ public class RestaurantPage extends DatabaseRunner{
 		frame.getContentPane().setBackground( Color.white );
 	
 		frame.repaint();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getSource().equals(btnReviewCreate)) {
+			new WriteReview(ID, NAME);
+		}
+		
 	}
 }
