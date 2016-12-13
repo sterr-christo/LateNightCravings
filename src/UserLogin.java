@@ -1,12 +1,14 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.*;
 
-public class UserLogin extends DatabaseRunner implements ActionListener {
+public class UserLogin extends DatabaseRunner implements ActionListener, WindowListener {
 	private JButton btnLogin = new JButton("Login"), btnRegister = new JButton("Register");
 	private JTextField txtUsername = new JTextField();
 	private JPasswordField pwdPassword = new JPasswordField();
@@ -62,6 +64,7 @@ public class UserLogin extends DatabaseRunner implements ActionListener {
 		btnRegister.setForeground(new Color(0, 0, 238));
 		btnRegister.addActionListener(this);
 
+		j.addWindowListener(this);
 		j.pack();
 		j.setVisible(true);
 		j.setBounds(100, 100, 500, 500);
@@ -92,8 +95,10 @@ public class UserLogin extends DatabaseRunner implements ActionListener {
 			if (!(rs.isClosed())) {
 				if (rs.getString("Username").contains(txtUsername.getText())) {
 					System.out.println("DEBUG(attemptLogin): Login credentials OK");
-					super.LoggedInUsername = txtUsername.getText();
-					new UserPage(txtUsername.getText());
+					LoggedInUsername = txtUsername.getText();
+					System.out.println("DEBUG(attemptLogin); Assigned user as " + LoggedInUsername);
+					up = new UserPage(txtUsername.getText());
+					super.Homepage1.setUsername(txtUsername.getText());
 					j.dispose();
 				} else {
 					
@@ -107,6 +112,48 @@ public class UserLogin extends DatabaseRunner implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		Homepage1.setVisible(false);
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		Homepage1.setVisible(true);
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

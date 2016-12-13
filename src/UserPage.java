@@ -1,13 +1,16 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import java.sql.*;
 
-public class UserPage extends DatabaseRunner implements ActionListener {
+public class UserPage extends DatabaseRunner implements ActionListener, WindowListener {
 	private String username;
 	private JTextField txtStreet = new JTextField(), txtCity = new JTextField(), txtState = new JTextField(),
 			txtZip = new JTextField(), txtLatitude = new JTextField(), txtLongitude = new JTextField();
@@ -180,6 +183,55 @@ public class UserPage extends DatabaseRunner implements ActionListener {
 		pane.setVisible(true);
 		
 		p.add(pane, c);
+	}
+	public void closeWindow() {
+		System.out.println("got here");
+		j.dispose();
+	}
+	public void setVisible(boolean b) {
+		j.setVisible(b);
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		
+		
 	}
 
 	// end of the class
