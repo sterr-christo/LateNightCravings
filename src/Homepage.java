@@ -12,7 +12,7 @@ public class Homepage extends DatabaseRunner implements ActionListener, WindowLi
 	private int width = gd.getDisplayMode().getWidth();
 	private int height = gd.getDisplayMode().getHeight();
 	private JButton btnSearch = new JButton("Find food near me!"), btnLogin = new JButton("Login"),
-			btnLocation = new JButton("Get Location"), btnAdvanced = new JButton("Advanced Search");
+			btnLocation = new JButton("Get Location");
 	private JLabel labUser = new JLabel();
 	private JLabel searchInstructions = new JLabel("Enter the name of a restaurant", SwingConstants.CENTER);
 	private JComboBox cboSearch = new JComboBox();
@@ -70,20 +70,11 @@ public class Homepage extends DatabaseRunner implements ActionListener, WindowLi
 		c.gridy = 3;
 		p.add(btnSearch, c);
 		btnSearch.setEnabled(false);
+		btnSearch.setToolTipText("Please login to find restaurants near you.");
 
-		c.gridx = 2;
-		c.gridy = 4;
-		p.add(btnAdvanced, c);
-		btnAdvanced.setOpaque(false);
-		btnAdvanced.setBackground(Color.WHITE);
-		btnAdvanced.setBorderPainted(false);
-		btnAdvanced.setForeground(new Color(0, 0, 238));
-		btnAdvanced.addActionListener(this);
 
-		// testing zone
 		populateAL();
 		setModel(new DefaultComboBoxModel(v), "");
-		// testing zone
 
 		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		j.pack();
@@ -120,9 +111,6 @@ public class Homepage extends DatabaseRunner implements ActionListener, WindowLi
 			int lat = new Random().nextInt(60);
 			int longi = new Random().nextInt(95);
 			new RestaurantTables(lat, longi);
-		}
-		if (e.getSource().equals(btnAdvanced)) {
-
 		}
 
 	}
@@ -229,6 +217,7 @@ public class Homepage extends DatabaseRunner implements ActionListener, WindowLi
 	public void setButton()
 	{
 		btnSearch.setEnabled( true );
+		btnSearch.setToolTipText("Click here to get restaurants near you! (According to your User Profile)");
 		btnSearch.addActionListener( this );
 	}
 	
