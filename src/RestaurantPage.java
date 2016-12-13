@@ -49,7 +49,7 @@ public class RestaurantPage extends DatabaseRunner{
 		JTable table = new JTable(new DefaultTableModel(new Object[]{"Comments", "Rating" },0));
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 	    	
-		ResultSet set = executeQuery("SELECT Comments, Rating FROM Review WHERE RestaurantId = " + id );
+		ResultSet set = executeQuery("SELECT Comments, Rating FROM Review WHERE RestaurantID = " + id );
 		
 	    try 
 	    {
@@ -75,13 +75,13 @@ public class RestaurantPage extends DatabaseRunner{
 	    JScrollPane pane = new JScrollPane( table );
 	    pane.getViewport().setBackground( Color.white );
 	    c.gridx=0;
-	    c.gridy=0;
+	    c.gridy=7;
 		p.add( pane, c );
 		
 		table = new JTable(new DefaultTableModel(new Object[]{"Item Name", "Price" },0));
 		set = executeQuery("SELECT Name, Price "
 									+ "FROM Serves NATURAL JOIN Items "
-									+ "WHERE RestaurantId = " + id );
+									+ "WHERE RestaurantID = " + id );
 		model = (DefaultTableModel) table.getModel();
 		
 	    try 
@@ -109,8 +109,50 @@ public class RestaurantPage extends DatabaseRunner{
 	    pane.getViewport().setBackground( Color.white );
 	    
 	    c.gridx=0;
-	    c.gridy=1;
+	    c.gridy=8;
 		p.add( pane,c );
+		
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0;
+		c.weighty = 0;
+		
+		
+		ResultSet rs = executeQuery("SELECT * FROM Restaurant WHERE RestaurantID = " + id);
+		
+		
+		try {
+			c.gridx=0;
+			c.gridy=0;
+			p.add(new JLabel(rs.getString("Name")),c );
+			
+			c.gridx=0;
+			c.gridy=1;
+			p.add(new JLabel(rs.getString("Phone")),c );
+			
+			c.gridx=0;
+			c.gridy=2;
+			p.add(new JLabel(rs.getString("Street")),c );
+			
+			c.gridx=0;
+			c.gridy=3;
+			p.add(new JLabel(rs.getString("City") + " " + rs.getString("State") + " "  + rs.getString("Zip")),c );
+			
+			c.gridx=0;
+			c.gridy=4;
+			p.add(new JLabel(rs.getString("Website")),c );
+			
+			c.gridx=0;
+			c.gridy=5;
+			p.add(new JLabel("Delivery: " +  rs.getInt("Delivery")),c );
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		c.gridx=0;
+		c.gridy=6;
+		p.add(new JLabel("Menu: "),c);
 		
 		frame.pack();
 		frame.setVisible(true);
