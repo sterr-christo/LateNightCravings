@@ -217,7 +217,7 @@ public class Homepage extends DatabaseRunner implements ActionListener, WindowLi
 			v.addElement(keywords.get(i));
 		}
 	}
-	public void setUsername(String s) {
+	public void setLabel(String s) {
 		labUser.setText(s);
 		btnLogin.setText("Logout");
 		}
