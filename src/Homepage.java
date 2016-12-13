@@ -182,7 +182,7 @@ public class Homepage extends DatabaseRunner implements ActionListener, WindowLi
 				e1.printStackTrace();
 			}
 			System.out.println(str);
-			new RestaurantTables(ID,str);
+			new RestaurantPage(ID,str);
 			
 		}
 	}

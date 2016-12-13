@@ -31,10 +31,6 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 	 * @param RestaurantName: The Restaurant name to title the table for.
 	 * This method creates a review table for the received parameter. Good for accessing the method outside of the class.
 	 */
-	 
-	public RestaurantTables(int RestaurantID, String RestaurantName) {
-		SetupReviewTable(RestaurantID,  RestaurantName);
-	}
   
 	private void create() {
 		LinkedList<String> names = new LinkedList<String>();
@@ -137,10 +133,7 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 	    		int id = idHash.get( name );
 	    		System.out.println("" + name + " " + id);
 	    		
-	    		if ( col == 0 )
-	    			SetupMenuTable( id, name );
-	    		else
-	    			SetupReviewTable( id, name );
+	    		new RestaurantPage(id, name);
 	    		
 	    	}
 	    });
@@ -151,93 +144,7 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 	 * Automatically sets up the table for Reviews/ratings using the restaurant id and name
 	 * This method require the WordWrapCellRenderer class
 	 */
-	private void SetupReviewTable( int id, String name )
-	{
-		String comments;
-		int rating;
-		
-		JFrame frame = new JFrame( name );
-		JTable table = new JTable(new DefaultTableModel(new Object[]{"Comments", "Rating" },0));
-		DefaultTableModel model = (DefaultTableModel) table.getModel();
-	    	
-		ResultSet set = executeQuery("SELECT Comments, Rating FROM Review WHERE RestaurantId = " + id );
-		
-	    try 
-	    {
-	    	while( set.next() ) 
-	    	{
-	    		comments = set.getString( "Comments" );
-	    		rating = set.getInt( "Rating" );
-				model.addRow(new Object[]{ comments, rating });
-	      }
-	    }
-	    catch (SQLException e) 
-	    {
-	      e.printStackTrace();
-	    }
-	    
-	    //Setup JFrame so it's scrollable, has centered text in the rating column and text wrapping in review column
-	    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-	    centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-	    table.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
-	    
-	    table.getColumnModel().getColumn(0).setCellRenderer(new WordWrapCellRenderer());
-	    
-	    JScrollPane pane = new JScrollPane( table );
-	    pane.getViewport().setBackground( Color.white );
-		frame.add( pane );
-		frame.pack();
-		frame.setVisible(true);
-		frame.setBounds( (width-HDimension)/2, (height-VDimension)/2, HDimension, VDimension );
-		frame.getContentPane().setBackground( Color.white );
 	
-		frame.repaint();
-	}
-	
-	private void SetupMenuTable( int id, String restaurantName )
-	{
-		String name;
-		int price;
-		
-		JFrame frame = new JFrame( restaurantName );
-		JTable table = new JTable(new DefaultTableModel(new Object[]{"Item Name", "Price" },0));
-		DefaultTableModel model = (DefaultTableModel) table.getModel();
-    	
-		ResultSet set = executeQuery("SELECT Name, Price "
-									+ "FROM Serves NATURAL JOIN Items "
-									+ "WHERE RestaurantId = " + id );
-		
-	    try 
-	    {
-	    	while( set.next() ) 
-	    	{
-	    		name = set.getString( "Name" );
-	    		price = set.getInt( "Price" );
-				model.addRow(new Object[]{ name, price });
-	      }
-	    }
-	    catch (SQLException e) 
-	    {
-	      e.printStackTrace();
-	    }
-	    
-	    //Setup JFrame so it's scrollable, has centered text in the rating column and text wrapping in review column
-	    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-	    centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-	    table.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
-	    
-	    table.getColumnModel().getColumn(0).setCellRenderer(new WordWrapCellRenderer());
-	    
-	    JScrollPane pane = new JScrollPane( table );
-	    pane.getViewport().setBackground( Color.white );
-		frame.add( pane );
-		frame.pack();
-		frame.setVisible(true);
-		frame.setBounds( (width-HDimension)/2, (height-VDimension)/2, HDimension, VDimension );
-		frame.getContentPane().setBackground( Color.white );
-	
-		frame.repaint();
-	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
