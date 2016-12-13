@@ -36,27 +36,38 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 		LinkedList<String> names = new LinkedList<String>();
 		LinkedList<Integer> ids = new LinkedList<Integer>();
 		
-		
-		String name, website, phone, distanceDisplay, delivers, genre;
-		int rowNum, latitude, longitude, closingTime, restaurantId, userLat, userLong, delivery;
-		double distance;
+		String name, website, phone, distanceString, delivers, genre;
+		int rowNum, colNum, latitude, longitude, closingTime, restaurantId, userLat, userLong, delivery;
+		double distance, distanceDisplay;
+		Object[][] rows = null;
 		
 		JFrame frame = new JFrame("Stoner's Late Night Cravings - Restaurants");
-		JTable table = new JTable(new DefaultTableModel(new Object[]{"Distance", "Name","Delivery", "Genre","Phone","Website","ClosingTime"},0));
-		DefaultTableModel model = (DefaultTableModel) table.getModel();
+//		JTable table = new JTable(new DefaultTableModel(new Object[]{"Distance", "Name","Delivery", "Genre","Phone","Website","ClosingTime"},0));
+//		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		
 		ResultSet userRs = null;
 		
 		if(LoggedInUsername != null) {
 	    userRs = super.executeQuery("SELECT Latitude, Longitude FROM User WHERE Username = '" + LoggedInUsername +"'");
 		}
+		
+		ResultSet countSet = super.executeQuery("SELECT count(*) from Restaurant" );
+		
 	    ResultSet rs = super.executeQuery("SELECT Latitude, Longitude, Delivery, Restaurant.Name AS Name, Genre.Name AS Genre, RestaurantID, Phone, "
 	    		+ "Website, ClosingTime FROM Restaurant LEFT OUTER JOIN Genre WHERE Genre.genreID = Restaurant.GenreID");
 	
+	    String[] columns = {"Distance","Delivery","Name","Genre","Phone","Website","Closing Time"};
+	    
 	    try 
 	    {
+	    	int count = countSet.getInt("count(*)");
 	    	rowNum = 0;
+	    	
+		    rows = new Object[count][7];
+		    
 	    	while( rs.next() ) 
 	    	{
+	    		colNum = 0;
 	    	    if(LoggedInUsername != null) {
 	    		userLat = userRs.getInt( "Latitude" );
 	    	    userLong = userRs.getInt( "Longitude" );
@@ -71,7 +82,10 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 				distance = Math.sqrt( Math.pow(userLat-latitude,2) + Math.pow(userLong-longitude, 2) );
 				int temp = (int)(10*distance);
 				temp = temp%10;
-				distanceDisplay = (int)distance+"."+temp;
+				distanceString = (int)distance+"."+temp;
+				distanceDisplay = Double.parseDouble( distanceString );
+				rows[rowNum][colNum] = distanceDisplay;
+				colNum++;
 				
 				//Format delivery
 				delivery = rs.getInt( "Delivery" );
@@ -79,19 +93,36 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 					delivers = "No";
 				else
 					delivers = "Yes";
+				rows[rowNum][colNum] = delivers;
+				colNum++;
 				
 				//Format the rest of the parameters
 				name = rs.getString("Name");
+				rows[rowNum][colNum] = name;
+				colNum++;
+					
 				genre = rs.getString("Genre");
+				rows[rowNum][colNum] = genre;
+				colNum++;
+				
 				restaurantId = rs.getInt("RestaurantID");
 				phone = rs.getString("Phone");
+				rows[rowNum][colNum] = phone;
+				colNum++;
+					
 				website =  rs.getString("Website");
+				rows[rowNum][colNum] = website;
+				colNum++;
+				
 				closingTime = rs.getInt("ClosingTime");
+				rows[rowNum][colNum] = closingTime;
+				colNum++;
 				
-				model.addRow(new Object[]{ distanceDisplay, name, delivers, genre, phone, website, closingTime });
 				
-//				names.add( name );
-//				ids.add( restaurantId );
+//				model.addRow(new Object[]{ distanceDisplay, name, delivers, genre, phone, website, closingTime });
+				
+				names.add( name );
+				ids.add( restaurantId );
 				idHash.put(name, restaurantId);
 				rowNum++;
 	      }
@@ -101,14 +132,30 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 	      e.printStackTrace();
 	    }
 	
+	    DefaultTableModel model = new DefaultTableModel(rows, columns) {
+	        public Class getColumnClass(int column) {
+	          Class returnValue;
+	          if ((column >= 0) && (column < getColumnCount())) {
+	            returnValue = getValueAt(0, column).getClass();
+	          } else {
+	            returnValue = Object.class;
+	          }
+	          return returnValue;
+	        }
+	      };
+	      JTable table = new JTable(model);
+
+	      RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+
+	      table.setRowSorter(sorter);
 	    
 	    //Make the table sortable
-	    TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
-	    table.setRowSorter(sorter);
-	    LinkedList<RowSorter.SortKey> sortKeys = new LinkedList<RowSorter.SortKey>();
-	    sortKeys.add(new RowSorter.SortKey(4, SortOrder.ASCENDING));
-	    sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
-	    sorter.setSortKeys(sortKeys);
+//	    TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
+//	    table.setRowSorter(sorter);
+//	    LinkedList<RowSorter.SortKey> sortKeys = new LinkedList<RowSorter.SortKey>();
+//	    sortKeys.add(new RowSorter.SortKey(4, SortOrder.ASCENDING));
+//	    sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+//	    sorter.setSortKeys(sortKeys);
 	    
 	    //Setup the JFrame
 	    JScrollPane pane = new JScrollPane( table );

@@ -143,7 +143,14 @@ public class RestaurantPage extends DatabaseRunner{
 			
 			c.gridx=0;
 			c.gridy=5;
-			p.add(new JLabel("Delivery: " +  rs.getInt("Delivery")),c );
+			String s = "";
+			if (rs.getInt("Delivery") == 0) {
+				s = "Yes";
+			}
+			else {
+				s = "No";
+			}
+			p.add(new JLabel("Delivery: " + s ),c );
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
