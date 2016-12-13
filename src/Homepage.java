@@ -1,17 +1,12 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
-public class Homepage extends DatabaseRunner implements ActionListener, FocusListener, KeyListener {
+public class Homepage extends DatabaseRunner implements ActionListener, WindowListener, KeyListener {
+	private JFrame j = new JFrame("Stoner's Late Night Cravings - Feed your wild side");
 	private int HDimension = 500, VDimension = 400;
 	private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	private int width = gd.getDisplayMode().getWidth();
@@ -24,12 +19,12 @@ public class Homepage extends DatabaseRunner implements ActionListener, FocusLis
 	private final Vector<String> v = new Vector<String>();
 	private boolean hide_flag = false;
 
+
 	public Homepage() {
 		create();
 	}
 
 	private void create() {
-		JFrame j = new JFrame("Stoner's Late Night Cravings - Feed your wild side");
 		JPanel p = new JPanel(new GridBagLayout());
 
 		j.setLayout(new BorderLayout());
@@ -109,7 +104,9 @@ public class Homepage extends DatabaseRunner implements ActionListener, FocusLis
 			new RestaurantTables(lat, longi);
 		}
 		if (e.getSource().equals(btnLogin)) {
+			System.out.println(LoggedInUsername);
 			new UserLogin();
+			
 		}
 		if (e.getSource().equals(btnLocation)) {
 			int lat = new Random().nextInt(60);
@@ -122,20 +119,6 @@ public class Homepage extends DatabaseRunner implements ActionListener, FocusLis
 
 	}
 
-	@Override
-	public void focusGained(FocusEvent e) {
-		if (LoggedInUsername != null) {
-			btnSearch.setEnabled(true);
-			labUser.setText(LoggedInUsername);
-		}
-
-	}
-
-	@Override
-	public void focusLost(FocusEvent e) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -238,5 +221,54 @@ public class Homepage extends DatabaseRunner implements ActionListener, FocusLis
 		for (int i = 0; i < keywords.size(); i++) {
 			v.addElement(keywords.get(i));
 		}
+	}
+	public void setUsername(String s) {
+		labUser.setText(s);
+		btnLogin.setText("Logout");
+		}
+	public void setVisible(boolean b) {
+			j.setVisible(b);
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
