@@ -11,20 +11,21 @@ import java.nio.file.*; //this is to use Path
 public class DatabaseRunner {
 	public static Path dbpath = FileSystems.getDefault().getPath("db", "LateNightCravings");
 	public static String dirPath = Paths.get("").toAbsolutePath().toString();
-	public String LoggedInUsername;
+	public static String LoggedInUsername;
 	public static String databasepath = "jdbc:sqlite:" + dirPath + "/" + dbpath;
 	public static Connection connect = null;
 	public static Homepage Homepage1;
 	public static DatabaseRunner db = new DatabaseRunner();
 	public UserPage up;
+	private static Homepage hp;
 
 	public static void main(String[] args) {
 		
 		db.setupConnection();
 		
-		// CreateProfile pr = new CreateProfile();
-		// RestaurantTables tr = new RestaurantTables();
-		new Homepage();
+//		 CreateProfile pr = new CreateProfile();
+//		 RestaurantTables tr = new RestaurantTables(10,10);
+		hp = new Homepage();
 		
 	}
 
@@ -84,9 +85,11 @@ public class DatabaseRunner {
 	}
 	public void setLoggedIn(String s) {
 		LoggedInUsername = s;
+		hp.setButton();
 	}
 	public String getLoggedIn() {
 		return LoggedInUsername;
 	}
 
 }
+

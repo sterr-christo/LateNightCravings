@@ -56,7 +56,7 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 	    ResultSet rs = super.executeQuery("SELECT Latitude, Longitude, Delivery, Restaurant.Name AS Name, Genre.Name AS Genre, RestaurantID, Phone, "
 	    		+ "Website, ClosingTime FROM Restaurant LEFT OUTER JOIN Genre WHERE Genre.genreID = Restaurant.GenreID");
 	
-	    String[] columns = {"Distance","Delivery","Name","Genre","Phone","Website","Closing Time"};
+	    String[] columns = {"Distance","Name","Delivery","Genre","Phone","Website","Closing Time"};
 	    
 	    try 
 	    {
@@ -87,6 +87,11 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 				rows[rowNum][colNum] = distanceDisplay;
 				colNum++;
 				
+				//Format the rest of the parameters
+				name = rs.getString("Name");
+				rows[rowNum][colNum] = name;
+				colNum++;
+				
 				//Format delivery
 				delivery = rs.getInt( "Delivery" );
 				if ( delivery == 1 )
@@ -94,11 +99,6 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 				else
 					delivers = "Yes";
 				rows[rowNum][colNum] = delivers;
-				colNum++;
-				
-				//Format the rest of the parameters
-				name = rs.getString("Name");
-				rows[rowNum][colNum] = name;
 				colNum++;
 					
 				genre = rs.getString("Genre");
@@ -176,7 +176,7 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 	    		
 	    		//this is hardcoded to the name column
 	    		String name = table.getValueAt(row, 1).toString();
-	    		
+	    		System.out.println("NAME IS: " + name);
 	    		int id = idHash.get( name );
 	    		System.out.println("" + name + " " + id);
 	    		

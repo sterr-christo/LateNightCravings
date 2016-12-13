@@ -97,11 +97,12 @@ public class Homepage extends DatabaseRunner implements ActionListener, WindowLi
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnSearch)) {
+			System.out.println("Clicking Button");
 			int lat = 0;
 			int longi = 0;
-			ResultSet userRs = super.executeQuery(
-					"SELECT Latitude, Longitude FROM User WHERE Username = '" + LoggedInUsername + "'");
+			
 			try {
+				ResultSet userRs = super.executeQuery("SELECT Latitude, Longitude FROM User WHERE Username = '" + LoggedInUsername + "'");
 				lat = userRs.getInt("Latitude");
 				longi = userRs.getInt("Longitude");
 			} catch (SQLException e1) {
@@ -225,6 +226,12 @@ public class Homepage extends DatabaseRunner implements ActionListener, WindowLi
 			j.setVisible(b);
 	}
 
+	public void setButton()
+	{
+		btnSearch.setEnabled( true );
+		btnSearch.addActionListener( this );
+	}
+	
 	@Override
 	public void windowOpened(WindowEvent e) {
 		// TODO Auto-generated method stub
