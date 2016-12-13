@@ -108,7 +108,6 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 	    JScrollPane pane = new JScrollPane( table );
 	    pane.getViewport().setBackground( Color.white );
 		frame.add( pane );
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
 		frame.setBounds( (width-HDimension)/2, (height-VDimension)/2, HDimension, VDimension );
