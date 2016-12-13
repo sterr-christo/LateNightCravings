@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 import javax.swing.*;
 
-public class UserLogin extends DatabaseRunner implements ActionListener {
+public class UserLogin extends DatabaseRunner implements ActionListener{
 	private JButton btnLogin = new JButton("Login"), btnRegister = new JButton("Register");
 	private JTextField txtUsername = new JTextField();
 	private JPasswordField pwdPassword = new JPasswordField();
@@ -97,7 +97,7 @@ public class UserLogin extends DatabaseRunner implements ActionListener {
 					System.out.println("DEBUG(attemptLogin): Login credentials OK");
 					setLoggedIn(username);
 					System.out.println("DEBUG(attemptLogin); Assigned user as " + LoggedInUsername);
-					
+					new UserPage(username);
 					j.dispose();
 				} else {
 					

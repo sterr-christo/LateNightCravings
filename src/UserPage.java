@@ -10,11 +10,12 @@ import javax.swing.table.DefaultTableModel;
 
 import java.sql.*;
 
-public class UserPage extends DatabaseRunner implements ActionListener, WindowListener {
+public class UserPage extends DatabaseRunner implements ActionListener {
 	private String username;
 	private JTextField txtStreet = new JTextField(), txtCity = new JTextField(), txtState = new JTextField(),
 			txtZip = new JTextField(), txtLatitude = new JTextField(), txtLongitude = new JTextField();
 	private JToggleButton tglEdit = new JToggleButton("Edit Info");
+	private JButton btnDeleteProfile = new JButton("Delete Profile");
 	private JFrame j = new JFrame("Stoner's Late Night Cravings - User Panel");
 	private JPanel p = new JPanel(new GridBagLayout());
 	private GridBagConstraints c = new GridBagConstraints();
@@ -55,24 +56,28 @@ public class UserPage extends DatabaseRunner implements ActionListener, WindowLi
 				txtStreet.setText(rs.getString("Street"));
 				txtStreet.setEnabled(false);
 				p.add(txtStreet, c);
+				txtStreet.setToolTipText("The Street you live on.");
 
 				c.gridx = 0;
 				c.gridy = 2;
 				txtCity.setText(rs.getString("City"));
 				txtCity.setEnabled(false);
 				p.add(txtCity, c);
+				txtCity.setToolTipText("The City you live in");
 
 				c.gridx = 1;
 				c.gridy = 2;
 				txtState.setText(rs.getString("State"));
 				txtState.setEnabled(false);
 				p.add(txtState, c);
+				txtState.setToolTipText("The State you live in");
 
 				c.gridx = 2;
 				c.gridy = 2;
 				txtZip.setText(rs.getString("Zip"));
 				txtZip.setEnabled(false);
 				p.add(txtZip, c);
+				txtZip.setToolTipText("The Zip Code you live in.");
 
 				c.gridx = 0;
 				c.gridy = 3;
@@ -83,6 +88,8 @@ public class UserPage extends DatabaseRunner implements ActionListener, WindowLi
 				txtLatitude.setText(rs.getString("Latitude"));
 				txtLatitude.setEnabled(false);
 				p.add(txtLatitude, c);
+				txtLatitude.setToolTipText("The Latitude you live at");
+			
 
 				c.gridx = 3;
 				c.gridy = 3;
@@ -93,15 +100,25 @@ public class UserPage extends DatabaseRunner implements ActionListener, WindowLi
 				txtLongitude.setText(rs.getString("Longitude"));
 				txtLongitude.setEnabled(false);
 				p.add(txtLongitude, c);
+				txtLongitude.setToolTipText("The Longitude you live at");
 
 				c.gridx = 4;
 				c.gridy = 0;
 				tglEdit.addActionListener(this);
 				p.add(tglEdit, c);
-
-				c.gridx = 0;
+				tglEdit.setToolTipText("Click here to toggle editing of your profile information");
+				
+				c.gridx=0;
 				c.gridy = 4;
 				c.gridwidth = 5;
+				btnDeleteProfile.addActionListener(this);
+				p.add(btnDeleteProfile,c);
+				btnDeleteProfile.setEnabled(false);
+				btnDeleteProfile.setToolTipText("Click here to delete your profile and all its information.");
+				
+				c.gridx = 0;
+				c.gridy = 5;
+				
 				populateTable();
 
 				// pane2.add(tblReviews, c);
@@ -132,6 +149,9 @@ public class UserPage extends DatabaseRunner implements ActionListener, WindowLi
 				switchEnableTextBoxes();
 			}
 		}
+		if (e.getSource().equals(btnDeleteProfile)) {
+			nukeProfile(LoggedInUsername);
+		}
 
 	}
 
@@ -142,6 +162,7 @@ public class UserPage extends DatabaseRunner implements ActionListener, WindowLi
 		txtZip.setEnabled(!(txtZip.isEnabled()));
 		txtLatitude.setEnabled(!(txtLatitude.isEnabled()));
 		txtLongitude.setEnabled(!(txtLongitude.isEnabled()));
+		btnDeleteProfile.setEnabled(!(btnDeleteProfile.isEnabled()));
 	}
 
 	private void populateTable() {
@@ -191,47 +212,14 @@ public class UserPage extends DatabaseRunner implements ActionListener, WindowLi
 	public void setVisible(boolean b) {
 		j.setVisible(b);
 	}
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		
-		
+	private void nukeProfile(String username) {
+		int accept = new JOptionPane().showConfirmDialog(null, "Are you sure you want to delete your profile? This is an irreversible option.","Delete Profile",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+		if(accept == JOptionPane.YES_OPTION) {
+			System.out.println("DEBUG(nukeProfile): Ok, deleting profile for " + username);
+			executeQuery("DELETE FROM User WHERE Username = '" + username + "'");
+			executeQuery("DELETE FROM Review WHERE Username = '" + username + "'");
+			j.dispose();
+		}
 	}
 
 	// end of the class

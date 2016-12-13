@@ -5,16 +5,15 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
-public class Homepage extends DatabaseRunner implements ActionListener, WindowListener, KeyListener {
+public class Homepage extends DatabaseRunner implements ActionListener, KeyListener {
 	private JFrame j = new JFrame("Stoner's Late Night Cravings - Feed your wild side");
 	private int HDimension = 500, VDimension = 400;
 	private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	private int width = gd.getDisplayMode().getWidth();
 	private int height = gd.getDisplayMode().getHeight();
-	private JButton btnSearch = new JButton("Find food near me!"), btnLogin = new JButton("Login"),
+	private JButton btnSearch = new JButton("Find food near me!"), btnLogin = new JButton("Login / Register"),
 			btnLocation = new JButton("Get Location");
 	private JLabel labUser = new JLabel();
-	private JLabel searchInstructions = new JLabel("Enter the name of a restaurant", SwingConstants.CENTER);
 	private JComboBox cboSearch = new JComboBox();
 	private JTextField txtSearch = (JTextField) cboSearch.getEditor().getEditorComponent();
 	private final Vector<String> v = new Vector<String>();
@@ -40,31 +39,35 @@ public class Homepage extends DatabaseRunner implements ActionListener, WindowLi
 		c.weightx = 0;
 		c.weighty = 1;
 
-		c.gridx = 3;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 2;
 		c.gridy = 0;
 		p.add(labUser, c);
+		labUser.setToolTipText("Your currently logged in username.");
 
-		c.gridx = 4;
+		c.gridx = 3;
 		c.gridy = 0;
+		
 		p.add(btnLogin, c);
 		btnLogin.addActionListener(this);
+		btnLogin.setToolTipText("Click here to open a login window.");
 
 		c.gridx = 2;
 		c.gridy = 1;
-		p.add(searchInstructions, c);
-		
-		
+		p.add(new JLabel("Enter the name of a restaurant", SwingConstants.CENTER), c);
 		
 		c.gridx = 2;
 		c.gridy = 2;
 		p.add(cboSearch, c);
 		cboSearch.setEditable(true);
 		txtSearch.addKeyListener(this);
+		cboSearch.setToolTipText("Start typing the name of a restauraunt for one to be suggested.");
 
 		c.gridx = 3;
 		c.gridy = 2;
 		p.add(btnLocation, c);
 		btnLocation.addActionListener(this);
+		btnLocation.setToolTipText("Click here to get your location and find restaurants near you.");
 
 		c.gridx = 2;
 		c.gridy = 3;
@@ -219,47 +222,5 @@ public class Homepage extends DatabaseRunner implements ActionListener, WindowLi
 		btnSearch.setEnabled( true );
 		btnSearch.setToolTipText("Click here to get restaurants near you! (According to your User Profile)");
 		btnSearch.addActionListener( this );
-	}
-	
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 }
