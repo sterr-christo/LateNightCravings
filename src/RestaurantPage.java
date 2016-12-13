@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -19,7 +21,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class RestaurantPage extends DatabaseRunner implements ActionListener{
+public class RestaurantPage extends DatabaseRunner implements ActionListener, WindowListener{
 	private int HDimension = 750, VDimension = 400;
 	private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	private int width = gd.getDisplayMode().getWidth();
@@ -40,6 +42,7 @@ public class RestaurantPage extends DatabaseRunner implements ActionListener{
 	{
 		frame = new JFrame( name );
 		JPanel p = new JPanel(new GridBagLayout());
+		frame.addWindowListener(this);
 
 		frame.setLayout(new BorderLayout());
 		frame.add(p, BorderLayout.CENTER);
@@ -83,7 +86,7 @@ public class RestaurantPage extends DatabaseRunner implements ActionListener{
 	    JScrollPane pane = new JScrollPane( table );
 	    pane.getViewport().setBackground( Color.white );
 	    c.gridx=0;
-	    c.gridy=7;
+	    c.gridy=8;
 		p.add( pane, c );
 		
 		table = new JTable(new DefaultTableModel(new Object[]{"Item Name", "Price" },0));
@@ -117,7 +120,7 @@ public class RestaurantPage extends DatabaseRunner implements ActionListener{
 	    pane.getViewport().setBackground( Color.white );
 	    
 	    c.gridx=0;
-	    c.gridy=8;
+	    c.gridy=7;
 		p.add( pane,c );
 		
 		c.fill = GridBagConstraints.NONE;
@@ -180,6 +183,61 @@ public class RestaurantPage extends DatabaseRunner implements ActionListener{
 		if(e.getSource().equals(btnReviewCreate)) {
 			new WriteReview(ID, NAME);
 		}
+		
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		if(LoggedInUsername == null) {
+			btnReviewCreate.setEnabled(false);
+			btnReviewCreate.setText("Please Login to review a restaurant.");
+		} else if(LoggedInUsername != null) {
+			btnReviewCreate.setEnabled(true);
+			btnReviewCreate.setText("Write Review");
+		}
+	}
+
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		if(LoggedInUsername == null) {
+			btnReviewCreate.setEnabled(false);
+			btnReviewCreate.setText("Please Login to review a restaurant.");
+		} else if(LoggedInUsername != null) {
+			btnReviewCreate.setEnabled(true);
+			btnReviewCreate.setText("Write Review");
+		}
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 }

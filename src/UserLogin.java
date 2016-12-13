@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 import javax.swing.*;
 
-public class UserLogin extends DatabaseRunner implements ActionListener, WindowListener {
+public class UserLogin extends DatabaseRunner implements ActionListener {
 	private JButton btnLogin = new JButton("Login"), btnRegister = new JButton("Register");
 	private JTextField txtUsername = new JTextField();
 	private JPasswordField pwdPassword = new JPasswordField();
@@ -64,7 +64,6 @@ public class UserLogin extends DatabaseRunner implements ActionListener, WindowL
 		btnRegister.setForeground(new Color(0, 0, 238));
 		btnRegister.addActionListener(this);
 
-		j.addWindowListener(this);
 		j.pack();
 		j.setVisible(true);
 		j.setBounds(100, 100, 500, 500);
@@ -112,48 +111,6 @@ public class UserLogin extends DatabaseRunner implements ActionListener, WindowL
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-		//setVisible(false);
-		
-	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		//Homepage1.setVisible(true);
-		
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

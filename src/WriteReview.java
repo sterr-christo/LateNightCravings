@@ -1,7 +1,5 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -14,14 +12,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class WriteReview extends DatabaseRunner implements ActionListener {
-	private int HDimension = 400, VDimension = 300;
-	private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-	private int width = gd.getDisplayMode().getWidth();
-	private int height = gd.getDisplayMode().getHeight();
+public class WriteReview extends DatabaseRunner implements ActionListener, ChangeListener {
 	private JTextField txtComments = new JTextField();
 	private JSlider sliRating = new JSlider();
+	private JLabel lblRating =new JLabel();
 	private JButton btnSubmit = new JButton("Submit");
 	private String NAME="";
 	private int ID=0;
@@ -60,6 +57,7 @@ public class WriteReview extends DatabaseRunner implements ActionListener {
 		p.add(new JLabel("Rating: " + sliRating.getValue()),c);
 		c.gridx = 1;
 		sliRating.setMaximum(5);
+		sliRating.addChangeListener(this);
 		p.add(sliRating,c);
 		
 		c.gridwidth = 2;
@@ -78,8 +76,17 @@ public class WriteReview extends DatabaseRunner implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(btnSubmit)) {
-			executeQuery("INSERT INTO Review VALUES (" + ID + ", '" + db.LoggedInUsername + "','" + txtComments.getText() + "'," + sliRating.getValue() + ")" );
-		j.dispose();
+			executeQuery("INSERT INTO Review VALUES (" + ID + ", '" + LoggedInUsername + "','" + txtComments.getText() + "'," + sliRating.getValue() + ")" );
+		j.dispose();		
+		}
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		// TODO Auto-generated method stub
+		JSlider source = (JSlider)e.getSource();
+		if(!source.getValueIsAdjusting()) {
+			lblRating.setText("Rating: " + (int)source.getValue());
 		}
 	}
 }
