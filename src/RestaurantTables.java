@@ -32,19 +32,20 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 		LinkedList<Integer> ids = new LinkedList<Integer>();
 		Hashtable<String,Integer> idHash = new Hashtable<String, Integer>();
 		
-		String name, website, phone, distanceDisplay, delivers;
-		int rowNum, latitude, longitude, genreId, closingTime, restaurantId, userLat, userLong, delivery;
+		String name, website, phone, distanceDisplay, delivers, genre;
+		int rowNum, latitude, longitude, closingTime, restaurantId, userLat, userLong, delivery;
 		double distance;
 		
 		JFrame frame = new JFrame("Stoner's Late Night Cravings - Restaurants");
-		JTable table = new JTable(new DefaultTableModel(new Object[]{"Distance", "Name","Delivery", "GenreID","Phone","Website","ClosingTime"},0));
+		JTable table = new JTable(new DefaultTableModel(new Object[]{"Distance", "Name","Delivery", "Genre","Phone","Website","ClosingTime"},0));
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		ResultSet userRs = null;
 		
 		if(LoggedInUsername != null) {
 	    userRs = super.executeQuery("SELECT Latitude, Longitude FROM User WHERE Username = '" + LoggedInUsername +"'");
 		}
-	    ResultSet rs = super.executeQuery("SELECT Latitude, Longitude, Delivery, Name, GenreID, RestaurantID, Phone, Website, ClosingTime FROM Restaurant");
+	    ResultSet rs = super.executeQuery("SELECT Latitude, Longitude, Delivery, Restaurant.Name AS Name, Genre.Name AS Genre, RestaurantID, Phone, "
+	    		+ "Website, ClosingTime FROM Restaurant LEFT OUTER JOIN Genre WHERE Genre.genreID = Restaurant.GenreID");
 	
 	    try 
 	    {
@@ -76,13 +77,13 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 				
 				//Format the rest of the parameters
 				name = rs.getString("Name");
-				genreId = rs.getInt("GenreID");
+				genre = rs.getString("Genre");
 				restaurantId = rs.getInt("RestaurantID");
 				phone = rs.getString("Phone");
 				website =  rs.getString("Website");
 				closingTime = rs.getInt("ClosingTime");
 				
-				model.addRow(new Object[]{ distanceDisplay, name, delivers, genreId, phone, website, closingTime });
+				model.addRow(new Object[]{ distanceDisplay, name, delivers, genre, phone, website, closingTime });
 				
 //				names.add( name );
 //				ids.add( restaurantId );
@@ -114,14 +115,14 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 		frame.getContentPane().setBackground( Color.white );
 	
 		frame.repaint();
-		
+	
 	    table.addMouseListener( new java.awt.event.MouseAdapter() {
 	    	public void mouseClicked( MouseEvent e ){
 	    		int row = table.rowAtPoint(e.getPoint());
 	    		int col = table.columnAtPoint(e.getPoint());
 	    		
 	    		//this is hardcoded to the name column
-	    		String name = (String)table.getModel().getValueAt(row, 1);
+	    		String name = table.getValueAt(row, 1).toString();
 	    		
 	    		int id = idHash.get( name );
 	    		System.out.println("" + name + " " + id);
