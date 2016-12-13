@@ -14,6 +14,7 @@ public class Homepage extends DatabaseRunner implements ActionListener, WindowLi
 	private JButton btnSearch = new JButton("Find food near me!"), btnLogin = new JButton("Login"),
 			btnLocation = new JButton("Get Location"), btnAdvanced = new JButton("Advanced Search");
 	private JLabel labUser = new JLabel();
+	private JLabel searchInstructions = new JLabel("Enter the name of a restaurant", SwingConstants.CENTER);
 	private JComboBox cboSearch = new JComboBox();
 	private JTextField txtSearch = (JTextField) cboSearch.getEditor().getEditorComponent();
 	private final Vector<String> v = new Vector<String>();
@@ -48,6 +49,12 @@ public class Homepage extends DatabaseRunner implements ActionListener, WindowLi
 		p.add(btnLogin, c);
 		btnLogin.addActionListener(this);
 
+		c.gridx = 2;
+		c.gridy = 1;
+		p.add(searchInstructions, c);
+		
+		
+		
 		c.gridx = 2;
 		c.gridy = 2;
 		p.add(cboSearch, c);
