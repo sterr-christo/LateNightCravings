@@ -169,8 +169,21 @@ public class Homepage extends DatabaseRunner implements ActionListener, WindowLi
 					return;
 				}
 			}
-		} else if (code == KeyEvent.VK_BACK_SPACE) {
-			txtSearch.setText("");
+		} else if (code == KeyEvent.VK_ENTER) {
+			int ID=0;
+			String str = txtSearch.getText();
+			ResultSet set = executeQuery("SELECT RestaurantID"
+					+ 					" FROM Restaurant "
+					+					" WHERE Restaurant.Name = '" +  str + "'");
+			try {
+				ID = set.getInt("RestaurantID");
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			System.out.println(str);
+			new RestaurantTables(ID,str);
+			
 		}
 	}
 
@@ -181,38 +194,13 @@ public class Homepage extends DatabaseRunner implements ActionListener, WindowLi
 	}
 
 	private void populateAL() {
-		ArrayList<String> keywords = new ArrayList<>();
-		ResultSet Index = super.executeQuery("SELECT Name FROM Genre");
+		ArrayList<String> keywords = new ArrayList<>(),
+				type = new ArrayList();
+		ResultSet Index = super.executeQuery("SELECT Name FROM Restaurant");
 		try {
 			while (Index.next()) {
 				keywords.add(Index.getString("Name"));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Index = super.executeQuery("SELECT Name FROM Restaurant");
-		try {
-			while (Index.next()) {
-				keywords.add(Index.getString("Name"));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Index = super.executeQuery("SELECT Name FROM Items");
-		try {
-			while (Index.next()) {
-				keywords.add(Index.getString("Name"));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Index = super.executeQuery("SELECT Username FROM User");
-		try {
-			while (Index.next()) {
-				keywords.add(Index.getString("Username"));
+				type.add("Restaurant");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

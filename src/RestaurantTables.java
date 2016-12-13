@@ -19,6 +19,7 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 	private int width = gd.getDisplayMode().getWidth();
 	private int height = gd.getDisplayMode().getHeight();
 	private int Latitude, Longitude;
+	private Hashtable<String,Integer> idHash = new Hashtable<String, Integer>();
 
 	public RestaurantTables(int Lat, int Longi) {
 			Latitude = Lat;
@@ -26,11 +27,19 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 			System.out.println("DEBUG(RestaurauntTables): Your location is " + Latitude + ", " + Longitude);
 	    create();
 	}
+	/* @param RestaurantID: The RestaurantID to create the review table for.
+	 * @param RestaurantName: The Restaurant name to title the table for.
+	 * This method creates a review table for the received parameter. Good for accessing the method outside of the class.
+	 */
+	 
+	public RestaurantTables(int RestaurantID, String RestaurantName) {
+		SetupReviewTable(RestaurantID,  RestaurantName);
+	}
   
 	private void create() {
 		LinkedList<String> names = new LinkedList<String>();
 		LinkedList<Integer> ids = new LinkedList<Integer>();
-		Hashtable<String,Integer> idHash = new Hashtable<String, Integer>();
+		
 		
 		String name, website, phone, distanceDisplay, delivers, genre;
 		int rowNum, latitude, longitude, closingTime, restaurantId, userLat, userLong, delivery;
