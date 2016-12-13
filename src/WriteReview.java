@@ -79,6 +79,7 @@ public class WriteReview extends DatabaseRunner implements ActionListener {
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(btnSubmit)) {
 			executeQuery("INSERT INTO Review VALUES (" + ID + ", '" + db.LoggedInUsername + "','" + txtComments.getText() + "'," + sliRating.getValue() + ")" );
+		j.dispose();
 		}
 	}
 }
