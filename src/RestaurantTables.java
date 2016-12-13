@@ -115,6 +115,7 @@ public class RestaurantTables extends DatabaseRunner implements ActionListener	{
 		frame.getContentPane().setBackground( Color.white );
 	
 		frame.repaint();
+		
 	
 	    table.addMouseListener( new java.awt.event.MouseAdapter() {
 	    	public void mouseClicked( MouseEvent e ){
