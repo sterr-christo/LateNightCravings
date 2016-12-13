@@ -11,18 +11,20 @@ import java.nio.file.*; //this is to use Path
 public class DatabaseRunner {
 	public static Path dbpath = FileSystems.getDefault().getPath("db", "LateNightCravings");
 	public static String dirPath = Paths.get("").toAbsolutePath().toString();
-
+	public String LoggedInUsername;
 	public static String databasepath = "jdbc:sqlite:" + dirPath + "/" + dbpath;
 	public static Connection connect = null;
-	public String LoggedInUsername = null;
 	public static Homepage Homepage1;
 	public UserPage up;
 
 	public static void main(String[] args) {
-		connect = setupConnection();
+		DatabaseRunner db = new DatabaseRunner();
+		db.setupConnection();
+		
 		// CreateProfile pr = new CreateProfile();
 		// RestaurantTables tr = new RestaurantTables();
-		Homepage1 = new Homepage();
+		new Homepage();
+		
 	}
 
 	public DatabaseRunner() {
@@ -78,6 +80,12 @@ public class DatabaseRunner {
 		// System.out.println("DEBUG(queryType): " +
 		// SQLquery.substring(0,SQLquery.indexOf(' ')));
 		return SQLquery.substring(0, SQLquery.indexOf(' '));
+	}
+	public void setLoggedIn(String s) {
+		LoggedInUsername = s;
+	}
+	public String getLoggedIn() {
+		return LoggedInUsername;
 	}
 
 }

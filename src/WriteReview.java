@@ -57,7 +57,7 @@ public class WriteReview extends DatabaseRunner implements ActionListener {
 		
 		c.gridwidth = 1;
 		c.gridy = 2;
-		p.add(new JLabel("Rating: "),c);
+		p.add(new JLabel("Rating: " + sliRating.getValue()),c);
 		c.gridx = 1;
 		sliRating.setMaximum(5);
 		p.add(sliRating,c);
@@ -78,7 +78,7 @@ public class WriteReview extends DatabaseRunner implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(btnSubmit)) {
-			executeQuery("INSERT INTO Review VALUES (" + ID + ", " + LoggedInUsername + "");
+			executeQuery("INSERT INTO Review VALUES (" + ID + ", " + LoggedInUsername + ",'" + txtComments.getText() + "'," + sliRating.getValue() + ")" );
 		}
 	}
 }

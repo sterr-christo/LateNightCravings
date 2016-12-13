@@ -88,17 +88,18 @@ public class UserLogin extends DatabaseRunner implements ActionListener, WindowL
 	private void attemptLogin() {
 		System.out.println("DEBUG(attemptLogin): attempting login");
 		String password = new String(pwdPassword.getPassword());
-		ResultSet rs = super.executeQuery("SELECT * FROM User WHERE Username = '" + txtUsername.getText()
+		String username = new String(txtUsername.getText());
+		ResultSet rs = super.executeQuery("SELECT * FROM User WHERE Username = '" + username
 				+ "' AND Password = '" + password + "'");
 
 		try {
 			if (!(rs.isClosed())) {
 				if (rs.getString("Username").contains(txtUsername.getText())) {
 					System.out.println("DEBUG(attemptLogin): Login credentials OK");
-					LoggedInUsername = txtUsername.getText();
+					setLoggedIn(username);
 					System.out.println("DEBUG(attemptLogin); Assigned user as " + LoggedInUsername);
-					up = new UserPage(txtUsername.getText());
-					super.Homepage1.setUsername(txtUsername.getText());
+					up = new UserPage(username);
+					
 					j.dispose();
 				} else {
 					
@@ -116,7 +117,7 @@ public class UserLogin extends DatabaseRunner implements ActionListener, WindowL
 
 	@Override
 	public void windowOpened(WindowEvent e) {
-		Homepage1.setVisible(false);
+		//setVisible(false);
 		
 	}
 
@@ -128,7 +129,7 @@ public class UserLogin extends DatabaseRunner implements ActionListener, WindowL
 
 	@Override
 	public void windowClosed(WindowEvent e) {
-		Homepage1.setVisible(true);
+		//Homepage1.setVisible(true);
 		
 	}
 
