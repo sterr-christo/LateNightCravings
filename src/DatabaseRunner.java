@@ -15,10 +15,11 @@ public class DatabaseRunner {
 	public static String databasepath = "jdbc:sqlite:" + dirPath + "/" + dbpath;
 	public static Connection connect = null;
 	public static Homepage Homepage1;
+	public static DatabaseRunner db = new DatabaseRunner();
 	public UserPage up;
 
 	public static void main(String[] args) {
-		DatabaseRunner db = new DatabaseRunner();
+		
 		db.setupConnection();
 		
 		// CreateProfile pr = new CreateProfile();

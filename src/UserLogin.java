@@ -96,7 +96,7 @@ public class UserLogin extends DatabaseRunner implements ActionListener, WindowL
 			if (!(rs.isClosed())) {
 				if (rs.getString("Username").contains(txtUsername.getText())) {
 					System.out.println("DEBUG(attemptLogin): Login credentials OK");
-					setLoggedIn(username);
+					db.setLoggedIn(username);
 					System.out.println("DEBUG(attemptLogin); Assigned user as " + LoggedInUsername);
 					up = new UserPage(username);
 					
