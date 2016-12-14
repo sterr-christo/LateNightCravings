@@ -84,9 +84,7 @@ public class WriteReview extends DatabaseRunner implements ActionListener, Chang
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		// TODO Auto-generated method stub
-		JSlider source = (JSlider)e.getSource();
-		if(!source.getValueIsAdjusting()) {
-			lblRating.setText("Rating: " + (int)source.getValue());
-		}
+			lblRating.setText("Rating: " + sliRating.getValue());
+		
 	}
 }

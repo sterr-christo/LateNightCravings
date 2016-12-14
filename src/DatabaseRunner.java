@@ -86,6 +86,7 @@ public class DatabaseRunner {
 	public void setLoggedIn(String s) {
 		LoggedInUsername = s;
 		hp.setButton();
+		hp.setLabel(s);
 	}
 	public String getLoggedIn() {
 		return LoggedInUsername;
